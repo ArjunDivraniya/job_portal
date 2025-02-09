@@ -138,4 +138,4 @@ Contributions are encouraged from developers, designers, sustainability enthusia
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/Priyasha-Yadav/Job-Portal/blob/main/LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/Priyasha-Yadav/job_portal/blob/main/LICENSE) file for details.
