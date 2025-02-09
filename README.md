@@ -7,7 +7,7 @@
 * **Prototype**: [Figma Prototype](#)
 * **Node Server**: [Backend](https://jobmentum.onrender.com)
 * **Frontend**: [Frontend](#)
-* **Documentation:** [API Documentation](#)
+* **Documentation:** [API Documentation](https://documenter.getpostman.com/view/39189648/2sAYX9kzJW)
 * **Backend Repo**: [GitHub - Backend](https://github.com/Priyasha-Yadav/Job-Portal/tree/main/backend)
 * **Frontend Repo**: [GitHub - Frontend](https://github.com/Priyasha-Yadav/Job-Portal/tree/main/frontend)  
 
@@ -40,7 +40,7 @@
 * **Backend**: Node.js, Express.js
 * **Database**: MongoDB with Mongoose for data modeling
 * **Authentication**: JWT (JSON Web Token) for secure user authentication
-* **Cloud Storage (Optional)**: AWS S3, Google Cloud Storage, or Firebase for resume and file uploads.
+* **Cloud Storage (Optional)**: Cloudinary or Firebase for resume and file uploads.
 * **Real-time Updates & Notifications**: Firebase/Netlify/Render for real-time notifications (for job application status, job alerts).
 * **Prototyping**: Figma for UI/UX design
 * **Other**: dotenv (for environment variables), bcryptjs (for password hashing), multer (for file uploads), Winston (for logging)
