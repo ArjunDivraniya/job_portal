@@ -1,5 +1,5 @@
 import express from "express";
-import isAuthenticated from "../middlewares/isAuthenticated.js"; // Assuming the path of your middleware
+import isAuthenticated from "../middlewares/isAuthenticated.js"; 
 import { getCompany, getCompanyById, registerCompany, updateCompany } from "../controllers/company.controller.js";
 
 const router = express.Router();
