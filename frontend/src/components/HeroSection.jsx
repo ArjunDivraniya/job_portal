@@ -8,7 +8,7 @@ function HeroSection() {
         <>
             <div className="text-center py-16 px-4 bg-gradient-to-r from-[#ffffff] to-[#ffffff] text-black bg-opacity-10">
                 <div className="flex flex-col items-center gap-5 mb-12">
-                    <span className="px-6 py-2 rounded-full font-medium bg-gray-200 text-[#9C27B0] text-sm">
+                    <span className="px-6 py-2 rounded-full font-medium bg-gray-200 text-[#1876D1] text-sm">
                         No. 1 Job Hunt Website
                     </span>
                 </div>
@@ -28,7 +28,7 @@ function HeroSection() {
                         sx={{
                             '& .MuiOutlinedInput-root': {
                                 borderRadius: '30px',
-                                color: 'white'
+                                color: 'black'
                             },
                         }}
                     />
@@ -36,7 +36,7 @@ function HeroSection() {
                         variant="contained"
                         color="secondary"
                         size="large"
-                        className="text-white px-6 sm:px-8 rounded-full"
+                        className="text-black px-6 sm:px-8 rounded-full"
                         sx={{
                             borderRadius: '30px',
                         }}

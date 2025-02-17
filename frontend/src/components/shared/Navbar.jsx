@@ -13,7 +13,7 @@ function Navbar() {
                     {/* Logo */}
                     <div className="flex items-center">
                         <h1 className='text-3xl sm:text-4xl font-semibold text-gray-800'>
-                            Job<span className='text-[#9C27B0]'>mentum</span>
+                            Job<span className='text-[#1876D1]'>mentum</span>
                         </h1>
                     </div>
 
