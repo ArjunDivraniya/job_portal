@@ -2,7 +2,6 @@ import { Button } from '@mui/material';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import BasicPopover from '../ui/popOver.jsx';
-import logo from '../../assets/logo.jpg';
 
 function Navbar() {
     const user = false;
@@ -13,9 +12,8 @@ function Navbar() {
                 <div className="flex items-center justify-between mx-auto max-w-7xl h-20 px-8">
                     {/* Logo */}
                     <div className="flex items-center">
-                        <img src={logo} alt="Jobmentum Logo" className="h-12 sm:h-16 mr-3" />
                         <h1 className='text-3xl sm:text-4xl font-semibold text-gray-800'>
-                            Job<span className='text-[#F83002]'>mentum</span>
+                            Job<span className='text-[#9C27B0]'>mentum</span>
                         </h1>
                     </div>
 

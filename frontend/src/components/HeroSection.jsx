@@ -6,16 +6,16 @@ import SearchIcon from '@mui/icons-material/Search'; // Import the Search icon
 function HeroSection() {
     return (
         <>
-            <div className="text-center py-16 px-4 bg-gradient-to-r from-[#9C27B0] to-[#F83002] text-white bg-opacity-10">
+            <div className="text-center py-16 px-4 bg-gradient-to-r from-[#ffffff] to-[#ffffff] text-black bg-opacity-10">
                 <div className="flex flex-col items-center gap-5 mb-12">
-                    <span className="px-6 py-2 rounded-full font-medium bg-gray-200 text-[#F83002] text-sm">
+                    <span className="px-6 py-2 rounded-full font-medium bg-gray-200 text-[#9C27B0] text-sm">
                         No. 1 Job Hunt Website
                     </span>
                 </div>
                 <h1 className="text-4xl sm:text-5xl font-semibold leading-tight mb-4">
                     Search, Apply & <br /> Get Your <span className="text-[#9C27B0]">Dream Jobs</span>
                 </h1>
-                <p className="text-lg mb-6 text-gray-300">
+                <p className="text-lg mb-6 text-black-300">
                     Find the perfect job for you and kickstart your career with ease.
                 </p>
                 <div className="flex justify-center gap-4">
@@ -28,6 +28,7 @@ function HeroSection() {
                         sx={{
                             '& .MuiOutlinedInput-root': {
                                 borderRadius: '30px',
+                                color: 'white'
                             },
                         }}
                     />
