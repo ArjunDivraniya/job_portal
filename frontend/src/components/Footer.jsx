@@ -1,9 +1,8 @@
 import React from 'react';
-import { Box, Typography, Link, Divider, Grid, IconButton } from '@mui/material';
+import { Box, Typography, Link, Divider, IconButton, Stack } from '@mui/material';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
-
 import InstagramIcon from '@mui/icons-material/Instagram';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 
@@ -11,8 +10,9 @@ function Footer() {
   return (
     <Box sx={{ backgroundColor: '#1a1a1a', color: '#fff', padding: 4 }}>
       {/* Top Section - Links */}
-      <Grid container spacing={4} justifyContent="center">
-        <Grid item xs={12} sm={4} md={3}>
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={4} justifyContent="center">
+        
+        <Box sx={{ flex: 1, mb: { xs: 4, sm: 0 } }}>
           <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
             Quick Links
           </Typography>
@@ -27,9 +27,9 @@ function Footer() {
               Contact
             </Link>
           </Box>
-        </Grid>
+        </Box>
 
-        <Grid item xs={12} sm={4} md={3}>
+        <Box sx={{ flex: 1, mb: { xs: 4, sm: 0 } }}>
           <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
             Services
           </Typography>
@@ -44,9 +44,9 @@ function Footer() {
               UI/UX Design
             </Link>
           </Box>
-        </Grid>
+        </Box>
 
-        <Grid item xs={12} sm={4} md={3}>
+        <Box sx={{ flex: 1, mb: { xs: 4, sm: 0 } }}>
           <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
             Follow Us
           </Typography>
@@ -67,8 +67,8 @@ function Footer() {
               <YouTubeIcon />
             </IconButton>
           </Box>
-        </Grid>
-      </Grid>
+        </Box>
+      </Stack>
 
       <Divider sx={{ my: 4, backgroundColor: '#444' }} />
 

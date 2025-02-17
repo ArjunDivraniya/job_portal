@@ -16,13 +16,12 @@ function Navbar() {
                             Job<span className='text-[#1876D1]'>mentum</span>
                         </h1>
                     </div>
-
                     {/* Navigation */}
                     <div className="flex items-center gap-6">
                         <ul className='flex font-medium items-center gap-6'>
-                            <li className="hover:text-[#F83002] cursor-pointer transition duration-300 ease-in-out transform hover:scale-105">Home</li>
-                            <li className="hover:text-[#F83002] cursor-pointer transition duration-300 ease-in-out transform hover:scale-105">Jobs</li>
-                            <li className="hover:text-[#F83002] cursor-pointer transition duration-300 ease-in-out transform hover:scale-105">Browse</li>
+                            <li className="hover:text-[#F83002] cursor-pointer transition duration-300 ease-in-out transform hover:scale-105"><Link to= "/">Home</Link></li>
+                            <li className="hover:text-[#F83002] cursor-pointer transition duration-300 ease-in-out transform hover:scale-105"><Link to= "/jobs">Jobs</Link></li>
+                            <li className="hover:text-[#F83002] cursor-pointer transition duration-300 ease-in-out transform hover:scale-105"><Link to= "/browse">Browse</Link></li>
                         </ul>
 
                         {user ? (

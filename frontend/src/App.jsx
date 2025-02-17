@@ -3,6 +3,7 @@ import './App.css'
 import SignUp from './components/auth/SignUp.jsx'
 import Login from './components/auth/Login.jsx'
 import Home from './components/Home.jsx'
+import Jobs from './components/Jobs.jsx'
 
 const appRouter = createBrowserRouter([
 {
@@ -21,7 +22,7 @@ const appRouter = createBrowserRouter([
 },{
 
   path: "/jobs",
-  element:<Jobs/>
+  element:<Jobs />
 }
 
 ])
