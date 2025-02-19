@@ -17,9 +17,9 @@ app.use(cookieParser());
 
 // CORS Configuration (updated to allow all origins temporarily)
 const corsOptions = {
-    origin: "http://localhost:5173", // Update to match your frontend URL (use http or https based on your frontend)
-    credentials: true
-};
+    origin: ['http://localhost:5173', 'http://localhost:5174'], // List the allowed origins
+    credentials: true, // If you're using cookies or authentication headers
+  };
 app.use(cors(corsOptions));
 
 
