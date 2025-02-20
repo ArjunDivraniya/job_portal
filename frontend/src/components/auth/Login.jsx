@@ -59,10 +59,8 @@ function Login() {
 
             if (res.data.success) {
                 console.log('Success:', res.data.message);
+                navigate("/"); 
                 toast.success(res.data.message);
-                setTimeout(() => {
-                    navigate("/"); // Navigate to home page after success
-                }, 1500);
                 dispatch(setUser(res.data.user))
             }
 

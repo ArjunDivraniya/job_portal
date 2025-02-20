@@ -1,8 +1,11 @@
 import React from 'react';
 import { Typography, IconButton, Avatar, Button, Box, Badge } from '@mui/material';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
+import { useNavigate } from 'react-router-dom';
 
 function Job() {
+    const navigate = useNavigate();
+    const jobId = "itjjthgu4tyoiutyoiegyhth";
     return (
         <div
             className="p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 bg-white"
@@ -137,6 +140,7 @@ function Job() {
                             boxShadow: 3,
                         },
                     }}
+                    onClick={()=> navigate(`description/${jobId}`)}
                 >
                     Details
                 </Button>

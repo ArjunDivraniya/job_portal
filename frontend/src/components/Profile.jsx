@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from './shared/Navbar';
 import ImageAvatars from './ui/avatar.jsx';
 import EditIcon from '@mui/icons-material/Edit';
@@ -7,11 +7,12 @@ import { Button } from '@mui/material';
 import PhoneIcon from '@mui/icons-material/Phone';
 import Badge from '@mui/material/Badge';
 import AppliedJobTable from './AppliedJobTable';
+import UpdateProfileDialog from './UpdateProfileDialog.jsx';
 
 const skills = ["HTML", "CSS", "JavaScript", "Reactjs"];
 const isResume = true;
-
 function Profile() {
+    const [open, setOpen] = useState(false)
     return (
         <>
             <Navbar />
@@ -24,7 +25,7 @@ function Profile() {
                             <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consectetur expedita eum ipsum.</p>
                         </div>
                     </div>
-                    <Button className="text-right">
+                    <Button onClick={()=>{setOpen(true)}} className="text-right">
                         <EditIcon />
                     </Button>
                 </div>
@@ -37,8 +38,8 @@ function Profile() {
                     <span>8733012811</span>
                 </div>
                 <div>
-                    <h1>Skills</h1>
                     <div className="flex flex-wrap gap-3">
+                    <h1 className='mt-1 font-semibold'>Skills</h1>
                         {skills.length !== 0 ? (
                             skills.map((item, index) => (
                                 <Badge key={index} overlap="rectangular" color="default">
@@ -65,6 +66,7 @@ function Profile() {
                             {/*Application Table */}
                             <AppliedJobTable />
                     </div>
+                    <UpdateProfileDialog open={open} setOpen={setOpen} />
         </>
     );
 }
