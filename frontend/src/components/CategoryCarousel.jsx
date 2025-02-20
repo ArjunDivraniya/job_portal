@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Button, IconButton, Box } from "@mui/material";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
 
@@ -39,6 +39,26 @@ const Carousel = () => {
   const getVisibleItems = () => {
     return category.slice(visibleStartIndex, visibleStartIndex + visibleCount);
   };
+
+  // Infinite scrolling effect by looping through categories
+  useEffect(() => {
+    const interval = setInterval(() => {
+      handleScroll("right"); // Scroll to the right every 3 seconds
+    }, 3000); // 3000ms = 3 seconds
+
+    return () => clearInterval(interval); // Clean up the interval on component unmount
+  }, [visibleStartIndex]);
+
+  // Infinite loop logic when we reach the end
+  const handleItemMovement = () => {
+    if (visibleStartIndex === category.length - visibleCount) {
+      setVisibleStartIndex(0);
+    }
+  };
+
+  useEffect(() => {
+    handleItemMovement();
+  }, [visibleStartIndex]);
 
   return (
     <Box
