@@ -8,6 +8,6 @@ const router = express.Router();
 // Routes
 router.route("/register").post(register, singleUpload);
 router.route("/login").post(login);
-router.route("/profile/update").post(isAuthenticated, updateProfile);  // Protected route
+router.route("/profile/update").post(isAuthenticated, singleUpload,updateProfile);  // Protected route
 router.route("/logout").get(logout);  // Protected route
 export default router;

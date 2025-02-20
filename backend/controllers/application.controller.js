@@ -123,13 +123,13 @@ export const updateStatus = async (req, res) => {
             })
         }
 
-application.status= status.toLowerCase();
-await application.save();
+        application.status = status.toLowerCase();
+        await application.save();
 
-return res.status(200).json({
-    message: "Status updated successfully",
-    success: true
-})
+        return res.status(200).json({
+            message: "Status updated successfully",
+            success: true
+        })
     } catch (error) {
         console.log(error)
     }

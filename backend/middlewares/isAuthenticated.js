@@ -13,16 +13,17 @@ const isAuthenticated = async (req, res, next) => {
     // Decode the token and extract userId
     const decoded = await jwt.verify(token, process.env.SECRET_KEY);
     
-    // Store userId in the request object
+    if(!decoded){
+      
+      return res.status(401).json({
+        message: "Invalid or expired token",
+        success: false,
+      });
+    }
     req.userId = decoded.userId;  // Change 'req.id' to 'req.userId'
-
     next(); // Proceed to the next middleware or route handler
   } catch (error) {
     console.log(error);
-    return res.status(401).json({
-      message: "Invalid or expired token",
-      success: false,
-    });
   }
 };
 
