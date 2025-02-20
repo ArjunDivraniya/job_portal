@@ -11,7 +11,7 @@ import { Toaster, toast } from 'sonner';
 import axios from 'axios';
 import { USER_API_END_POINT } from '../../utils/constant.js';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLoading } from '../../redux/authSlice.js';
+import { setLoading, setUser } from '../../redux/authSlice.js';
 import CircularProgress from '@mui/material/CircularProgress'; // Import CircularProgress
 
 function Login() {
@@ -63,6 +63,7 @@ function Login() {
                 setTimeout(() => {
                     navigate("/"); // Navigate to home page after success
                 }, 1500);
+                dispatch(setUser(res.data.user))
             }
 
         } catch (error) {

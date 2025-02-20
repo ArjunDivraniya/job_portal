@@ -11,6 +11,7 @@ function Job() {
                 borderRadius: '16px', // Adds a softer corner radius for better aesthetic
                 width: '100%', // Ensures the card takes up the full available width
                 height: 'auto', // Removes maxHeight constraint for rectangular shape
+           
             }}
         >
             <div className="flex justify-between items-center">
@@ -69,8 +70,7 @@ function Job() {
             </Typography>
 
             <Typography variant="body1" sx={{ mt: 1, color: '#555', lineHeight: 1.6 }}>
-                Job Description goes here. This can be a summary of the job.
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. A ad explicabo tenetur ipsam? Aliquam, nesciunt.
+               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis adipisci ad soluta voluptatibus, vel impedit aliquam perspiciatis iure?
             </Typography>
 
             <Box sx={{ display: 'flex', gap: 2, marginTop: 3 }}>

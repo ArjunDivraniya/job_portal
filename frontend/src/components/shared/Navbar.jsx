@@ -2,10 +2,10 @@ import { Button } from '@mui/material';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import BasicPopover from '../ui/popOver.jsx';
+import { useSelector } from 'react-redux';
 
 function Navbar() {
-    const user = false;
-
+const {user} = useSelector(store=>store.auth);
     return (
         <>
             <div className='bg-white shadow-md'>
@@ -25,47 +25,51 @@ function Navbar() {
                         </ul>
 
                         {user ? (
-                            <BasicPopover />
-                        ) : (
-                            <div className="flex gap-4">
-                                <Link to="/login">
-                                    <Button
-                                        variant='contained'
-                                        color='primary'
-                                        sx={{
-                                            borderRadius: '30px',
-                                            textTransform: 'none',
-                                            padding: '8px 20px',
-                                            boxShadow: 2,
-                                            '&:hover': {
-                                                backgroundColor: '#0069d9',
-                                                boxShadow: 3,
-                                            },
-                                        }}
-                                    >
-                                        Login
-                                    </Button>
-                                </Link>
+    <>
+        <BasicPopover />
+        
+    </>
+) : (
+    <div className="flex gap-4">
+        <Link to="/login">
+            <Button
+                variant='contained'
+                color='primary'
+                sx={{
+                    borderRadius: '30px',
+                    textTransform: 'none',
+                    padding: '8px 20px',
+                    boxShadow: 2,
+                    '&:hover': {
+                        backgroundColor: '#0069d9',
+                        boxShadow: 3,
+                    },
+                }}
+            >
+                Login
+            </Button>
+        </Link>
 
-                                <Link to="/signup">
-                                    <Button
-                                        variant='contained'
-                                        color='secondary'
-                                        sx={{
-                                            borderRadius: '30px',
-                                            textTransform: 'none',
-                                            padding: '8px 20px',
-                                            boxShadow: 2,
-                                            '&:hover': {
-                                                backgroundColor: '#c2185b',
-                                                boxShadow: 3,
-                                            },
-                                        }}
-                                    >
-                                        SignUp
-                                    </Button>
-                                </Link>
-                            </div>
+        <Link to="/signup">
+            <Button
+                variant='contained'
+                color='secondary'
+                sx={{
+                    borderRadius: '30px',
+                    textTransform: 'none',
+                    padding: '8px 20px',
+                    boxShadow: 2,
+                    '&:hover': {
+                        backgroundColor: '#c2185b',
+                        boxShadow: 3,
+                    },
+                }}
+            >
+                SignUp
+            </Button>
+        </Link>
+    </div>
+
                         )}
                     </div>
                 </div>

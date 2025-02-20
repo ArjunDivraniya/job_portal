@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../shared/Navbar';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -14,103 +14,78 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setLoading } from '../../redux/authSlice.js';
 import CircularProgress from '@mui/material/CircularProgress';
 
-function SignUp() {
+const SignUp = () => {
+
     const [input, setInput] = useState({
         fullname: "",
         email: "",
+        phoneNumber: "",
         password: "",
-        confirm_password: "",
-        phone: "",
-        role: "",  // We will set this based on user type (student/recruiter)
+        role: "",
+        file: ""
     });
-    const navigate = useNavigate();
-    const { loading } = useSelector(store => store.auth); // Access the loading state
-    const [userType, setUserType] = useState('student');  // Default role is 'student'
-    const [profilePic, setProfilePic] = useState(null);
+    const {loading, user} = useSelector(store => store.auth);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-    // Handle form input change
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setInput({
-            ...input,
-            [name]: value,
-        });
+    const changeEventHandler = (e) => {
+        setInput({ ...input, [e.target.name]: e.target.value });
     };
 
-    // Handle radio button change for user type
-    const handleRadioChange = (event) => {
-        setUserType(event.target.value);
-        setInput({
-            ...input,
-            role: event.target.value,  // Set role to the selected user type
-        });
+    const changeFileHandler = (e) => {
+        setInput({ ...input, file: e.target.files?.[0] });
     };
 
-    // Handle file change for profile picture
-    const handleFileChange = (event) => {
-        const file = event.target.files[0];
-        if (file && (file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg')) {
-            setProfilePic(file);
-        } else {
-            alert('Please upload a valid image file (PNG, JPG, JPEG).');
-        }
-    };
-
-    // Handle form submission
-    const handleSubmit = async (e) => {
+    const submitHandler = async (e) => {
         e.preventDefault();
-
-        // Validate form fields
-        if (input.password !== input.confirm_password) {
-            toast.error('Passwords do not match.');
-            return;
-        }
-
-        if (!input.fullname || !input.email || !input.phone || !input.password || !input.confirm_password || !input.role) {
-            toast.error('Please fill in all the fields.');
-            return;
-        }
-
-        // Create FormData object for file upload
+        
+        // Check form data before appending
+        console.log("Form Data:", input);
+    
+        // Append form fields
         const formData = new FormData();
         formData.append("fullname", input.fullname);
         formData.append("email", input.email);
-        formData.append("phoneNumber", input.phone);
+        formData.append("phoneNumber", input.phoneNumber.replace(/\s+/g, ''));
         formData.append("password", input.password);
         formData.append("role", input.role);
-
-        if (profilePic) {
-            formData.append("file", profilePic); // Append profile picture file if selected
+        if (input.file) {
+            formData.append("file", input.file);
         }
+        
 
-        // Log form data
-        formData.forEach((value, key) => {
-            console.log(`${key}: ${value}`);
-        });
-
-        // Start loading state
-        dispatch(setLoading(true));
-
+    
+        // Log the form data to see if everything is correct
+        for (let [key, value] of formData.entries()) {
+            console.log(key, value);
+        }
+        
+    
         try {
+            dispatch(setLoading(true));
             const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
+                headers: { 'Content-Type': "multipart/form-data" },
                 withCredentials: true,
             });
-
             if (res.data.success) {
                 navigate("/login");
-                toast.success(res.data.message);  // Display success message
-            } else {
-                toast.error(res.data.message || 'Something went wrong.');
+                toast.success(res.data.message);
             }
-
         } catch (error) {
-            console.error('Error during sign up:', error);
-            toast.error(error.response?.data?.message || 'An error occurred. Please try again later.');
+            // Log the full error response
+            console.log("Error:", error.response ? error.response.data : error);
+            toast.error(error.response ? error.response.data.message : "Something went wrong");
         } finally {
-            dispatch(setLoading(false));  // Stop loading state
+            dispatch(setLoading(false));
         }
     };
+    
+
+    useEffect(() => {
+        if (user) {
+            navigate("/");
+        }
+    }, [user, navigate]);
 
     return (
         <div>
@@ -119,7 +94,7 @@ function SignUp() {
                 <div className="w-full max-w-lg p-8 bg-white shadow-lg rounded-lg">
                     <h1 className="font-bold text-3xl text-center text-[#1876D1] mb-6">Sign Up</h1>
 
-                    <form className="space-y-6" onSubmit={handleSubmit}>
+                    <form className="space-y-6" onSubmit={submitHandler}>
                         {/* Full Name */}
                         <div>
                             <TextField
@@ -130,7 +105,7 @@ function SignUp() {
                                 type="text"
                                 name="fullname"
                                 value={input.fullname}
-                                onChange={handleChange}
+                                onChange={changeEventHandler}
                                 required
                             />
                         </div>
@@ -145,7 +120,7 @@ function SignUp() {
                                 type="email"
                                 name="email"
                                 value={input.email}
-                                onChange={handleChange}
+                                onChange={changeEventHandler}
                                 required
                             />
                         </div>
@@ -153,14 +128,14 @@ function SignUp() {
                         {/* Phone Number */}
                         <div>
                             <TextField
-                                id="phone"
+                                id="phoneNumber"
                                 label="Phone Number"
                                 variant="outlined"
                                 fullWidth
                                 type="tel"
-                                name="phone"
-                                value={input.phone}
-                                onChange={handleChange}
+                                name="phoneNumber"
+                                value={input.phoneNumber}
+                                onChange={changeEventHandler}
                                 placeholder="(123) 456-7890"
                                 required
                             />
@@ -176,7 +151,7 @@ function SignUp() {
                                 type="password"
                                 name="password"
                                 value={input.password}
-                                onChange={handleChange}
+                                onChange={changeEventHandler}
                                 required
                             />
                         </div>
@@ -191,7 +166,7 @@ function SignUp() {
                                 type="password"
                                 name="confirm_password"
                                 value={input.confirm_password}
-                                onChange={handleChange}
+                                onChange={changeEventHandler}
                                 required
                             />
                         </div>
@@ -201,9 +176,9 @@ function SignUp() {
                             <FormControl component="fieldset">
                                 <RadioGroup
                                     aria-label="user-type"
-                                    name="user-type"
-                                    value={userType}
-                                    onChange={handleRadioChange}
+                                    name="role"
+                                    value={input.role}
+                                    onChange={changeEventHandler}
                                     row
                                 >
                                     <FormControlLabel
@@ -229,18 +204,18 @@ function SignUp() {
                                 type="file"
                                 id="profile-pic"
                                 accept="image/png, image/jpeg, image/jpg"
-                                onChange={handleFileChange}
+                                onChange={changeFileHandler}
                                 className="mt-1 block w-full text-sm text-gray-500 file:py-2 file:px-4 file:rounded-md file:border file:border-gray-300 file:text-gray-700 file:bg-gray-100 hover:file:bg-gray-200"
                             />
-                            {profilePic && (
-                                <p className="text-sm text-gray-600 mt-2">Selected File: {profilePic.name}</p>
+                            {input.file && (
+                                <p className="text-sm text-gray-600 mt-2">Selected File: {input.file.name}</p>
                             )}
                         </div>
 
                         {/* Sign Up Button */}
                         <div>
                             {loading ? (
-                                <Button className='w-full my-4' disabled>
+                                <Button className="w-full my-4" disabled>
                                     <CircularProgress size={24} color="inherit" />
                                 </Button>
                             ) : (
