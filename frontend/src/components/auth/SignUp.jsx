@@ -21,7 +21,7 @@ const SignUp = () => {
         email: "",
         phoneNumber: "",
         password: "",
-        role: "",
+        role: "student",
         file: ""
     });
     const {loading, user} = useSelector(store => store.auth);
@@ -63,7 +63,7 @@ const SignUp = () => {
     
         try {
             dispatch(setLoading(true));
-            const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
+            const res = await axios.post('http://localhost:8000/api/v1/user/register', formData, {
                 headers: { 'Content-Type': "multipart/form-data" },
                 withCredentials: true,
             });
@@ -85,7 +85,7 @@ const SignUp = () => {
         if (user) {
             navigate("/");
         }
-    }, [user, navigate]);
+    }, []);
 
     return (
         <div>
