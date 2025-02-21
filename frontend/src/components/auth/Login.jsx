@@ -59,10 +59,17 @@ function Login() {
 
             if (res.data.success) {
                 console.log('Success:', res.data.message);
-                navigate("/"); 
                 toast.success(res.data.message);
-                dispatch(setUser(res.data.user))
+                
+                // Store the token after successful login
+                localStorage.setItem('authToken', res.data.token); // If it's a JWT token
+            
+                // Redirect after a short delay (if needed)
+                setTimeout(() => navigate("/"), 1000);
+            
+                dispatch(setUser(res.data.success));
             }
+            
 
         } catch (error) {
             console.log(error);
@@ -147,23 +154,24 @@ function Login() {
                         </div>
 
                         {/* Login Button */}
-                            {loading ? ( <Button className='w-full my-4'>
-                                <CircularProgress size={24} color="inherit" /> </Button> // Show spinner
-                            ) : (
-                               
-                          
-                        <div>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                fullWidth
-                                size="large"
-                                type="submit"
-                            >
-                                Login
-                            </Button>
-                        </div>
-  )}
+                        {loading ? (
+                            <Button className='w-full my-4' disabled>
+                                <CircularProgress size={24} color="inherit" />
+                            </Button> // Show spinner
+                        ) : (
+                            <div>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    fullWidth
+                                    size="large"
+                                    type="submit"
+                                >
+                                    Login
+                                </Button>
+                            </div>
+                        )}
+
                         {/* Sign Up link */}
                         <div className="text-center text-sm text-gray-500 mt-4">
                             Don't have an account?{' '}

@@ -4,19 +4,19 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 const AppliedJobTable = () => {
   // Example data for applied jobs
   const appliedJobs = [
-    { date: '2025-01-15', jobRole: 'Software Engineer', company: 'TechCorp', status: 'Interviewing' },
-    { date: '2025-01-20', jobRole: 'Product Manager', company: 'InnovateX', status: 'Applied' },
-    { date: '2025-01-25', jobRole: 'UX Designer', company: 'CreativeCo', status: 'Offer Received' },
+    { date: '2025-01-15', jobRole: 'Software Engineer', company: 'TechCorp', status: 'Pending' },
+    { date: '2025-01-20', jobRole: 'Product Manager', company: 'InnovateX', status: 'Rejected' },
+    { date: '2025-01-25', jobRole: 'UX Designer', company: 'CreativeCo', status: 'Accepted' },
   ];
 
   // Define a function to return different colors for tags based on the status
   const getStatusTagStyle = (status) => {
     switch (status) {
-      case 'Interviewing':
+      case 'Pending':
         return { backgroundColor: '#2196f3', color: 'white' }; // Green
-      case 'Applied':
+      case 'Rejected':
         return { backgroundColor: '#9C27B0', color: 'white' }; // Orange
-      case 'Offer Received':
+      case 'Accepted':
         return { backgroundColor: '#4caf50', color: 'white' }; // Blue
       default:
         return { backgroundColor: '#9e9e9e', color: 'white' }; // Gray
