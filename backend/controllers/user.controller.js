@@ -17,7 +17,7 @@ export const register = async (req, res) => {
             });
         }
 
-        // Validate email format (simple regex)
+        // Validate email format
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
             return res.status(400).json({
@@ -26,14 +26,9 @@ export const register = async (req, res) => {
             });
         }
 
-        const file = req.file;
-        const fileUri = getDataUri(file);
-        const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
-
-
         // Check if user already exists
-        const user = await User.findOne({ email });
-        if (user) {
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
             return res.status(400).json({
                 message: "User already exists with this email",
                 success: false
@@ -43,6 +38,14 @@ export const register = async (req, res) => {
         // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
 
+        // Process profile picture (only if provided)
+        let profilePhotoUrl = null;
+        if (req.file) {
+            const fileUri = getDataUri(req.file);
+            const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+            profilePhotoUrl = cloudResponse.secure_url;
+        }
+
         // Create new user
         await User.create({
             fullname,
@@ -50,8 +53,8 @@ export const register = async (req, res) => {
             phoneNumber,
             password: hashedPassword,
             role,
-            profile:{
-                profilePhoto:cloudResponse.secure_url,
+            profile: {
+                profilePhoto: profilePhotoUrl, // Will be null if no file is uploaded
             }
         });
 
@@ -68,6 +71,7 @@ export const register = async (req, res) => {
         });
     }
 };
+
 
 // Login user
 export const login = async (req, res) => {
@@ -139,7 +143,7 @@ export const logout = async (req, res) => {
         return res.status(500).json({
             message: "Server error",
             success: false
-        });
+        }); 
     }
 };
 
@@ -152,11 +156,11 @@ export const updateProfile = async (req, res) => {
         const fileUri = getDataUri(file);
         const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
 
-     let skillsArray;
+        let skillsArray;
 
         // Process skills
-        if(skills){
-         skillsArray = skills.split(",").map(skill => skill.trim());
+        if (skills) {
+            skillsArray = skills.split(",").map(skill => skill.trim());
         }
 
         // Find user by userId (attached via middleware)
@@ -170,13 +174,13 @@ export const updateProfile = async (req, res) => {
         }
 
         // Update user data
-        if(fullname) user.fullname = fullname;
-        if(email) user.email  = email;
-        if(bio) user.bio = bio;
-        if(skills) user.profile.skills = skillsArray;
-        if(phoneNumber) user.phoneNumber = phoneNumber;
+        if (fullname) user.fullname = fullname;
+        if (email) user.email = email;
+        if (bio) user.bio = bio;
+        if (skills) user.profile.skills = skillsArray;
+        if (phoneNumber) user.phoneNumber = phoneNumber;
 
-        if(cloudResponse){
+        if (cloudResponse) {
             user.profile.resume = cloudResponse.secure_url // save the cloudinary url
             user.profile.resumeOriginalName = file.originalname // Save the original file name
         }
@@ -184,14 +188,14 @@ export const updateProfile = async (req, res) => {
 
         // Save user
         await user.save();
-user={
-    _id: user._id,
-    fullname: user.fullname,
-    email: user.email,
-    phoneNumber: user.phoneNumber,
-    role: user.role,
-    profile: user.profile
-}
+        user = {
+            _id: user._id,
+            fullname: user.fullname,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            role: user.role,
+            profile: user.profile
+        }
         // Send response
         return res.status(200).json({
             message: "Profile updated successfully",
