@@ -15,7 +15,7 @@ const appRouter = createBrowserRouter([
   },
 
   {
-    path: 'login',
+    path: '/login',
     element: <Login />
   },
 
@@ -29,7 +29,7 @@ const appRouter = createBrowserRouter([
   },
 
   {
-path:"/description/:id",
+path:"description/:id",
 element: <JobDescription />
   }
   , {

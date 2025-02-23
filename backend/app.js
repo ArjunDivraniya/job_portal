@@ -8,20 +8,30 @@ import applicationRoute from "./routes/application.route.js"
 
 const app = express();
 
+const allowedOrigins = [
+  "https://jomentum.netlify.app", 
+  "http://localhost:5173",
+  "http://localhost:5174"
+];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true, 
+  methods: ["GET", "POST", "PUT", "DELETE"]
+};
+
+app.use(cors(corsOptions));
+
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
-
-
-// CORS Configuration (updated to allow all origins temporarily)
-const corsOptions = {
-    origin: ['http://localhost:5173', 'http://localhost:5174'], // List the allowed origins
-    credentials: true, // If you're using cookies or authentication headers
-  };
-app.use(cors(corsOptions));
-
 
 // API Routes
 app.use("/api/v1/user", userRoute);

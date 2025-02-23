@@ -7,12 +7,13 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import { Link, useNavigate } from 'react-router-dom';
-import { toast } from 'sonner';
+import { Toaster, toast } from 'sonner';
 import axios from 'axios';
 import { USER_API_END_POINT } from '../../utils/constant.js';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLoading } from '../../redux/authSlice.js';
+import { setLoading, setUser } from '../../redux/authSlice.js';
 import CircularProgress from '@mui/material/CircularProgress';
+
 
 const SignUp = () => {
 
@@ -21,10 +22,10 @@ const SignUp = () => {
         email: "",
         phoneNumber: "",
         password: "",
-        role: "",
+        role: "student",
         file: ""
     });
-    const {loading, user} = useSelector(store => store.auth);
+    const { loading, user } = useSelector(store => store.auth);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -38,10 +39,10 @@ const SignUp = () => {
 
     const submitHandler = async (e) => {
         e.preventDefault();
-        
+
         // Check form data before appending
         console.log("Form Data:", input);
-    
+
         // Append form fields
         const formData = new FormData();
         formData.append("fullname", input.fullname);
@@ -52,25 +53,33 @@ const SignUp = () => {
         if (input.file) {
             formData.append("file", input.file);
         }
-        
 
-    
+
+
         // Log the form data to see if everything is correct
         for (let [key, value] of formData.entries()) {
             console.log(key, value);
         }
-        
-    
+
+
         try {
             dispatch(setLoading(true));
             const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
                 headers: { 'Content-Type': "multipart/form-data" },
                 withCredentials: true,
             });
+           
             if (res.data.success) {
-                navigate("/login");
+                console.log("User received from backend:", res.data.user);  
                 toast.success(res.data.message);
-            }
+                
+                dispatch(setUser(res.data.success)); 
+            
+                setTimeout(() => {
+                    navigate("/");
+                }, 1000);
+            }            
+                
         } catch (error) {
             // Log the full error response
             console.log("Error:", error.response ? error.response.data : error);
@@ -79,13 +88,13 @@ const SignUp = () => {
             dispatch(setLoading(false));
         }
     };
-    
+
 
     useEffect(() => {
         if (user) {
             navigate("/");
         }
-    }, [user, navigate]);
+    }, []);
 
     return (
         <div>
@@ -242,6 +251,8 @@ const SignUp = () => {
                     </form>
                 </div>
             </div>
+                        <Toaster position="bottom-right" />
+            
         </div>
     );
 }

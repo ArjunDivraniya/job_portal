@@ -21,7 +21,7 @@ function Login() {
         role: "", // This is to hold the user type (student or recruiter)
     });
 
-    const { loading } = useSelector(store => store.auth); // Access the loading state
+    const { loading, user } = useSelector(store => store.auth); // Access the loading state
     const [userType, setUserType] = useState('student');
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -59,10 +59,13 @@ function Login() {
 
             if (res.data.success) {
                 console.log('Success:', res.data.message);
-                navigate("/"); 
-                toast.success(res.data.message);
-                dispatch(setUser(res.data.user))
+                toast.success(res.data.message);            
+                // Redirect after a short delay (if needed)
+                setTimeout(() => navigate("/"), 1000);
+            
+                dispatch(setUser(res.data.success));
             }
+            
 
         } catch (error) {
             console.log(error);
@@ -73,6 +76,7 @@ function Login() {
             } else {
                 toast.error('An error occurred, please try again!'); // Fallback message
             }
+
         } finally {
             dispatch(setLoading(false)); // Set loading state to false after the request completes
         }
@@ -147,23 +151,24 @@ function Login() {
                         </div>
 
                         {/* Login Button */}
-                            {loading ? ( <Button className='w-full my-4'>
-                                <CircularProgress size={24} color="inherit" /> </Button> // Show spinner
-                            ) : (
-                               
-                          
-                        <div>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                fullWidth
-                                size="large"
-                                type="submit"
-                            >
-                                Login
-                            </Button>
-                        </div>
-  )}
+                        {loading ? (
+                            <Button className='w-full my-4' disabled>
+                                <CircularProgress size={24} color="inherit" />
+                            </Button> // Show spinner
+                        ) : (
+                            <div>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    fullWidth
+                                    size="large"
+                                    type="submit"
+                                >
+                                    Login
+                                </Button>
+                            </div>
+                        )}
+
                         {/* Sign Up link */}
                         <div className="text-center text-sm text-gray-500 mt-4">
                             Don't have an account?{' '}

@@ -6,7 +6,7 @@
 
 * **Prototype**: [Figma Prototype](#)
 * **Node Server**: [Backend](https://jobmentum.onrender.com)
-* **Frontend**: [Frontend](#)
+* **Frontend**: [Frontend](https://jomentum.netlify.app)
 * **Documentation:** [API Documentation](https://documenter.getpostman.com/view/39189648/2sAYX9kzJW)
 * **Backend Repo**: [GitHub - Backend](https://github.com/Priyasha-Yadav/Job-Portal/tree/main/backend)
 * **Frontend Repo**: [GitHub - Frontend](https://github.com/Priyasha-Yadav/Job-Portal/tree/main/frontend)  
@@ -136,6 +136,3 @@ Contributions are encouraged from developers, designers, sustainability enthusia
 3. Make your changes.
 4. Open a pull request for review.
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/Priyasha-Yadav/job_portal/blob/main/LICENSE) file for details.

@@ -1,11 +1,32 @@
 import { Button } from '@mui/material';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import BasicPopover from '../ui/popOver.jsx';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { toast } from 'sonner'
+import { setUser } from '../../redux/authSlice.js'
+import { USER_API_END_POINT } from '../../utils/constant.js'
+import axios from 'axios'
+
 
 function Navbar() {
-const {user} = useSelector(store=>store.auth);
+    const { user } = useSelector(store => store.auth);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const logoutHandler = async () => {
+        try {
+            const res = await axios.get(`${USER_API_END_POINT}/logout`, { withCredentials: true });
+            if (res.data.success) {
+                dispatch(setUser(null));
+                navigate("/");
+                toast.success(res.data.message);
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(error.response.data.message);
+        }
+    }
     return (
         <>
             <div className='bg-white shadow-md'>
@@ -19,56 +40,67 @@ const {user} = useSelector(store=>store.auth);
                     {/* Navigation */}
                     <div className="flex items-center gap-6">
                         <ul className='flex font-medium items-center gap-6'>
-                            <li className="hover:text-[#F83002] cursor-pointer transition duration-300 ease-in-out transform hover:scale-105"><Link to= "/">Home</Link></li>
-                            <li className="hover:text-[#F83002] cursor-pointer transition duration-300 ease-in-out transform hover:scale-105"><Link to= "/jobs">Jobs</Link></li>
-                            <li className="hover:text-[#F83002] cursor-pointer transition duration-300 ease-in-out transform hover:scale-105"><Link to= "/browse">Browse</Link></li>
+                            {user && user.role === 'recruiter' ? (
+                                <>
+                                    <li className="hover:text-[#1876D1] cursor-pointer transition duration-300 ease-in-out transform hover:scale-105"><Link to="/admin/companies">Companies</Link></li>
+                                    <li className="hover:text-[#1876D1] cursor-pointer transition duration-300 ease-in-out transform hover:scale-105"><Link to="/admin/jobs">Jobs</Link></li>
+
+                                </>
+                            ) : (
+                                <>
+                                    <li className="hover:text-[#1876D1] cursor-pointer transition duration-300 ease-in-out transform hover:scale-105"><Link to="/">Home</Link></li>
+                                    <li className="hover:text-[#1876D1] cursor-pointer transition duration-300 ease-in-out transform hover:scale-105"><Link to="/jobs">Jobs</Link></li>
+                                    <li className="hover:text-[#1876D1] cursor-pointer transition duration-300 ease-in-out transform hover:scale-105"><Link to="/browse">Browse</Link></li>
+
+                                </>
+                            )}
                         </ul>
 
                         {user ? (
-    <>
-        <BasicPopover />
-        
-    </>
-) : (
-    <div className="flex gap-4">
-        <Link to="/login">
-            <Button
-                variant='contained'
-                color='primary'
-                sx={{
-                    borderRadius: '30px',
-                    textTransform: 'none',
-                    padding: '8px 20px',
-                    boxShadow: 2,
-                    '&:hover': {
-                        backgroundColor: '#0069d9',
-                        boxShadow: 3,
-                    },
-                }}
-            >
-                Login
-            </Button>
-        </Link>
+                            <>
+<BasicPopover logoutHandler={logoutHandler} />
 
-        <Link to="/signup">
-            <Button
-                variant='contained'
-                color='secondary'
-                sx={{
-                    borderRadius: '30px',
-                    textTransform: 'none',
-                    padding: '8px 20px',
-                    boxShadow: 2,
-                    '&:hover': {
-                        backgroundColor: '#c2185b',
-                        boxShadow: 3,
-                    },
-                }}
-            >
-                SignUp
-            </Button>
-        </Link>
-    </div>
+                            </>
+                        ) : (
+                            <div className="flex gap-4">
+                                <Link to="/login">
+                                    <Button
+                                        variant='contained'
+                                        color='primary'
+                                        sx={{
+                                            borderRadius: '30px',
+                                            textTransform: 'none',
+                                            padding: '8px 20px',
+                                            boxShadow: 2,
+                                            '&:hover': {
+                                                backgroundColor: '#0069d9',
+                                                boxShadow: 3,
+                                            },
+                                        }}
+                                    >
+                                        Login
+                                    </Button>
+                                </Link>
+
+                                <Link to="/signup">
+                                    <Button
+                                        variant='contained'
+                                        color='secondary'
+                                        sx={{
+                                            borderRadius: '30px',
+                                            textTransform: 'none',
+                                            padding: '8px 20px',
+                                            boxShadow: 2,
+                                            '&:hover': {
+                                                backgroundColor: '#c2185b',
+                                                boxShadow: 3,
+                                            },
+                                        }}
+                                    >
+                                        SignUp
+                                    </Button>
+                                </Link>
+                            </div>
 
                         )}
                     </div>

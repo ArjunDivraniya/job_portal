@@ -63,7 +63,6 @@ function Profile() {
             </div>
                     <div className="max-w-4xl mx-auto bg-white-2xl">
                         <h1 className='font-bold text-2xl'>Applied Jobs</h1>
-                            {/*Application Table */}
                             <AppliedJobTable />
                     </div>
                     <UpdateProfileDialog open={open} setOpen={setOpen} />

@@ -17,7 +17,7 @@ export const register = async (req, res) => {
             });
         }
 
-        // Validate email format (simple regex)
+        // Validate email format
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
             return res.status(400).json({
@@ -26,14 +26,9 @@ export const register = async (req, res) => {
             });
         }
 
-        const file = req.file;
-        const fileUri = getDataUri(file);
-        const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
-
-
         // Check if user already exists
-        const user = await User.findOne({ email });
-        if (user) {
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
             return res.status(400).json({
                 message: "User already exists with this email",
                 success: false
@@ -43,6 +38,14 @@ export const register = async (req, res) => {
         // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
 
+        // Process profile picture (only if provided)
+        let profilePhotoUrl = null;
+        if (req.file) {
+            const fileUri = getDataUri(req.file);
+            const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+            profilePhotoUrl = cloudResponse.secure_url;
+        }
+
         // Create new user
         await User.create({
             fullname,
@@ -50,8 +53,8 @@ export const register = async (req, res) => {
             phoneNumber,
             password: hashedPassword,
             role,
-            profile:{
-                profilePhoto:cloudResponse.secure_url,
+            profile: {
+                profilePhoto: profilePhotoUrl, // Will be null if no file is uploaded
             }
         });
 
@@ -69,9 +72,11 @@ export const register = async (req, res) => {
     }
 };
 
+
 // Login user
 export const login = async (req, res) => {
     try {
+      
         const { email, password, role } = req.body;
 
         if (!email || !password || !role) {
@@ -139,72 +144,73 @@ export const logout = async (req, res) => {
         return res.status(500).json({
             message: "Server error",
             success: false
-        });
+        }); 
     }
 };
 
 // Update profile
 export const updateProfile = async (req, res) => {
     try {
-        const { fullname, email, phoneNumber, bio, skills } = req.body;
+        console.log("Update Profile API Triggered");
+        
+        // Log Request User & Body
+        console.log("Authenticated User ID:", req.userId);
+        console.log("Request Body:", req.body);
+        console.log("Uploaded File:", req.file);
 
-        const file = req.file;
-        const fileUri = getDataUri(file);
-        const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
-
-     let skillsArray;
-
-        // Process skills
-        if(skills){
-         skillsArray = skills.split(",").map(skill => skill.trim());
+        // Ensure authentication works
+        if (!req.userId) {
+            return res.status(401).json({ success: false, message: "Unauthorized: No user ID found" });
         }
 
-        // Find user by userId (attached via middleware)
-        const userId = req.userId; // You need middleware to extract userId from JWT
-        let user = await User.findById(userId);
+        let user = await User.findById(req.userId);
         if (!user) {
-            return res.status(404).json({
-                message: "User not found",
-                success: false
-            });
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+
+        // Extract fields
+        const { fullname, email, phoneNumber, bio, skills } = req.body;
+        let skillsArray = skills ? skills.split(",").map(skill => skill.trim()) : [];
+
+        // File Handling
+        let resumeUrl = user.profile?.resume || null;
+        if (req.file) {
+            try {
+                const fileUri = getDataUri(req.file);
+                const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+                resumeUrl = cloudResponse.secure_url;
+            } catch (fileError) {
+                console.error("Cloudinary Upload Error:", fileError);
+                return res.status(500).json({ success: false, message: "File upload failed", error: fileError.message });
+            }
         }
 
         // Update user data
-        if(fullname) user.fullname = fullname;
-        if(email) user.email  = email;
-        if(bio) user.bio = bio;
-        if(skills) user.profile.skills = skillsArray;
-        if(phoneNumber) user.phoneNumber = phoneNumber;
+        user.fullname = fullname || user.fullname;
+        user.email = email || user.email;
+        user.bio = bio || user.bio;
+        user.phoneNumber = phoneNumber || user.phoneNumber;
+        user.profile.skills = skillsArray.length > 0 ? skillsArray : user.profile.skills;
+        user.profile.resume = resumeUrl;
 
-        if(cloudResponse){
-            user.profile.resume = cloudResponse.secure_url // save the cloudinary url
-            user.profile.resumeOriginalName = file.originalname // Save the original file name
-        }
-
-
-        // Save user
         await user.save();
-user={
-    _id: user._id,
-    fullname: user.fullname,
-    email: user.email,
-    phoneNumber: user.phoneNumber,
-    role: user.role,
-    profile: user.profile
-}
-        // Send response
-        return res.status(200).json({
-            message: "Profile updated successfully",
-            success: true,
-            user
-        });
 
+        return res.status(200).json({
+            success: true,
+            message: "Profile updated successfully",
+            user: {
+                _id: user._id,
+                fullname: user.fullname,
+                email: user.email,
+                phoneNumber: user.phoneNumber,
+                role: user.role,
+                profile: user.profile
+            }
+        });
 
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            message: "Server error",
-            success: false
-        });
+        console.error("Update Profile Error:", error);
+        
+        return res.status(500).json({ success: false, message: "Internal Server Error", error: error.message });
     }
 };

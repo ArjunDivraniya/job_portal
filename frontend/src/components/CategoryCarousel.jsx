@@ -100,7 +100,8 @@ const Carousel = () => {
             display: "none"
           },
           scrollBehavior: "smooth", // Make scrolling smoother
-          transition: "scroll 0.5s ease-in-out" // Smooth transition effect when scrolling
+          transition: "scroll 0.5s ease-in-out", // Smooth transition effect when scrolling
+
         }}
       >
         {getVisibleItems().map((item, index) => (
@@ -120,6 +121,8 @@ const Carousel = () => {
                 backgroundColor: "#9C27B0", // Purple on hover
                 color: "#ffffff", // White text on hover
                 transform: "scale(1.1)", // Slight zoom effect on hover
+                border: "1px solid #ffffff", // White border on hover
+
               }
             }}
           >

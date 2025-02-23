@@ -5,8 +5,10 @@ import Button from '@mui/material/Button';
 import ImageAvatars from './avatar.jsx';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+import { Link } from 'react-router-dom';
 
-export default function BasicPopover() {
+
+export default function BasicPopover({ logoutHandler }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -69,29 +71,33 @@ export default function BasicPopover() {
 
           {/* Action Buttons */}
           <div className="flex flex-col gap-2 mt-4">
-            <Button
-              variant="text"
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'flex-start',
-                padding: '6px 12px',
-                borderRadius: '6px',
-                '&:hover': {
-                  backgroundColor: '#f0f0f0',
-                  textDecoration: 'underline',
-                },
-                color: '#333',
-                fontSize: '14px',
-                fontWeight: '500', // Medium weight for the button text
-              }}
-            >
-              <PersonOutlineOutlinedIcon sx={{ marginRight: '8px' }} />
-              View profile
-            </Button>
+          <Link to="/profile">
+              <Button
+                variant="text"
+                fullWidth // This ensures the button takes up the entire width
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'flex-start',
+                  padding: '6px 12px',
+                  borderRadius: '6px',
+                  '&:hover': {
+                    backgroundColor: '#f0f0f0',
+                  },
+                  color: '#333',
+                  fontSize: '14px',
+                  fontWeight: '500', // Medium weight for the button text
+                }}
+              >
+                <PersonOutlineOutlinedIcon sx={{ marginRight: '8px' }} />
+                View Profile
+              </Button>
+            </Link>
+            <Link to="/">
 
             <Button
               variant="text"
+              fullWidth
               sx={{
                 display: 'flex',
                 alignItems: 'center',
@@ -100,16 +106,17 @@ export default function BasicPopover() {
                 borderRadius: '6px',
                 '&:hover': {
                   backgroundColor: '#f0f0f0',
-                  textDecoration: 'underline',
                 },
                 color: '#333',
                 fontSize: '14px',
                 fontWeight: '500', // Medium weight for the button text
               }}
+              onClick={logoutHandler}
             >
               <LogoutIcon sx={{ marginRight: '8px' }} />
               Logout
             </Button>
+            </Link>
           </div>
         </Typography>
       </Popover>
