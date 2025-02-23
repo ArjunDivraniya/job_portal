@@ -8,7 +8,7 @@ import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined
 import { Link } from 'react-router-dom';
 
 
-export default function BasicPopover() {
+export default function BasicPopover({ logoutHandler }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -111,6 +111,7 @@ export default function BasicPopover() {
                 fontSize: '14px',
                 fontWeight: '500', // Medium weight for the button text
               }}
+              onClick={logoutHandler}
             >
               <LogoutIcon sx={{ marginRight: '8px' }} />
               Logout

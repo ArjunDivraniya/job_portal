@@ -4,6 +4,7 @@ import { setAllJobs } from "../redux/jobSlice.js";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 
+
 const useGetAllJobs = () => {
     const dispatch = useDispatch();
     const {searchedQuery} = useSelector(store=>store.job);

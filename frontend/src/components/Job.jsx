@@ -1,41 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Typography, IconButton, Avatar, Button, Box, Badge } from '@mui/material';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import { useNavigate } from 'react-router-dom';
 
 function Job() {
     const navigate = useNavigate();
+    const [saved, setSaved] = useState(false);
+    
     const jobId = "itjjthgu4tyoiutyoiegyhth";
+
     return (
         <div
             className="p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 bg-white"
             style={{
                 marginTop: '20px',
-                borderRadius: '16px', // Adds a softer corner radius for better aesthetic
-                width: '100%', // Ensures the card takes up the full available width
-                height: 'auto', // Removes maxHeight constraint for rectangular shape
-           
+                borderRadius: '16px',
+                width: '100%',
+                height: 'auto',
             }}
         >
             <div className="flex justify-between items-center">
-                <div className="flex items-center gap-3">
-                    <Typography variant="body2" sx={{ color: '#757575', fontStyle: 'italic' }}>
-                        2 days ago
-                    </Typography>
-                </div>
+                <Typography variant="body2" sx={{ color: '#757575', fontStyle: 'italic' }}>
+                    2 days ago
+                </Typography>
 
-                <div>
-                    <IconButton
-                        color="primary"
-                        sx={{
-                            '&:hover': {
-                                backgroundColor: '#f1f1f1',
-                            },
-                        }}
-                    >
-                        <BookmarkIcon />
-                    </IconButton>
-                </div>
+                <IconButton onClick={() => setSaved(!saved)}>
+                    {saved ? <BookmarkIcon color="primary" /> : <BookmarkBorderIcon />}
+                </IconButton>
             </div>
 
             <div className="flex items-center gap-3 mt-2">
@@ -73,58 +65,58 @@ function Job() {
             </Typography>
 
             <Typography variant="body1" sx={{ mt: 1, color: '#555', lineHeight: 1.6 }}>
-               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis adipisci ad soluta voluptatibus, vel impedit aliquam perspiciatis iure?
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis adipisci ad soluta voluptatibus, vel impedit aliquam perspiciatis iure?
             </Typography>
 
             <Box sx={{ display: 'flex', gap: 2, marginTop: 3 }}>
-                <Badge
-                    badgeContent="12"
-                    color="primary"
-                    sx={{
-                        fontWeight: 'bold',
-                        padding: '5px 10px',
-                        borderRadius: 2,
-                        backgroundColor: '#f1f9ff',
-                        color: '#1876D1',
-                        fontSize: '14px',
-                    }}
-                    variant="standard"
-                >
-                    Positions
-                </Badge>
+          <Badge
+            badgeContent="12"
+            color="primary"
+            sx={{
+              fontWeight: 'bold',
+              padding: '5px 10px',
+              borderRadius: 2,
+              backgroundColor: '#f1f9ff',
+              color: '#1876D1',
+              fontSize: '14px',
+            }}
+            variant="standard"
+          >
+            Positions
+          </Badge>
 
-                <Badge
-                    badgeContent="Part Time"
-                    color="default"
-                    sx={{
-                        fontWeight: 'bold',
-                        padding: '5px 10px',
-                        borderRadius: 2,
-                        backgroundColor: '#f1f9ff',
-                        color: '#000',
-                        fontSize: '14px',
-                    }}
-                    variant="dot"
-                >
-                    Job Type
-                </Badge>
+          <Badge
+            badgeContent="Part Time"
+            color="default"
+            sx={{
+              fontWeight: 'bold',
+              padding: '5px 10px',
+              borderRadius: 2,
+              backgroundColor: '#f1f9ff',
+              color: '#00000', // Corrected to black color
+              fontSize: '14px',
+            }}
+            variant="dot"
+          >
+            Job Type
+          </Badge>
 
-                <Badge
-                    badgeContent="24LPA"
-                    color="secondary"
-                    sx={{
-                        fontWeight: 'bold',
-                        padding: '5px 10px',
-                        borderRadius: 2,
-                        backgroundColor: '#f1f9ff',
-                        color: '#9C27B0',
-                        fontSize: '14px',
-                    }}
-                    variant="dot"
-                >
-                    Salary
-                </Badge>
-            </Box>
+          <Badge
+            badgeContent="24LPA"
+            color="secondary"
+            sx={{
+              fontWeight: 'bold',
+              padding: '5px 10px',
+              borderRadius: 2,
+              backgroundColor: '#f1f9ff',
+              color: '#9C27B0',
+              fontSize: '14px',
+            }}
+            variant="dot"
+          >
+            Salary
+          </Badge>
+        </Box>
 
             <Box sx={{ display: 'flex', gap: 2, marginTop: 3 }}>
                 <Button
@@ -140,7 +132,7 @@ function Job() {
                             boxShadow: 3,
                         },
                     }}
-                    onClick={()=> navigate(`description/${jobId}`)}
+                    onClick={() => navigate(`/description/${jobId}`)}
                 >
                     Details
                 </Button>

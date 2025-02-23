@@ -21,7 +21,7 @@ function Login() {
         role: "", // This is to hold the user type (student or recruiter)
     });
 
-    const { loading } = useSelector(store => store.auth); // Access the loading state
+    const { loading, user } = useSelector(store => store.auth); // Access the loading state
     const [userType, setUserType] = useState('student');
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -59,11 +59,7 @@ function Login() {
 
             if (res.data.success) {
                 console.log('Success:', res.data.message);
-                toast.success(res.data.message);
-                
-                // Store the token after successful login
-                localStorage.setItem('authToken', res.data.token); // If it's a JWT token
-            
+                toast.success(res.data.message);            
                 // Redirect after a short delay (if needed)
                 setTimeout(() => navigate("/"), 1000);
             
@@ -80,6 +76,7 @@ function Login() {
             } else {
                 toast.error('An error occurred, please try again!'); // Fallback message
             }
+
         } finally {
             dispatch(setLoading(false)); // Set loading state to false after the request completes
         }
