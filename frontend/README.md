@@ -3,6 +3,24 @@
 ## Overview
 The frontend for **Jobmentum**, a modern job application and recruitment platform. Built using **React.js**, this frontend provides an intuitive and seamless user experience for job seekers and employers. It integrates with the **Jobmentum Backend API** for authentication, job listings, applications, and company management.
 
+## **🔗 Key Links**
+
+* **Prototype**: [Figma Prototype](#)
+* **Frontend**: [Frontend](https://jomentum.netlify.app)
+* **Frontend Repo**: [GitHub - Frontend](https://github.com/Priyasha-Yadav/Job-Portal/tree/main/frontend)  
+
+## Preview  
+
+| <h3>Home Page</h3> | <h3>Jobs Page</h3> |
+|:----------:|:---------:|
+|<br><img src="https://res.cloudinary.com/dd5zrwqzj/image/upload/v1740375533/Screenshot_2025-02-24_at_11.05.55_AM_kbx3nw.png" width="500px" /> |<br><img src="https://res.cloudinary.com/dd5zrwqzj/image/upload/v1740375537/Screenshot_2025-02-24_at_11.07.25_AM_xexsmo.png" width="500px" /> |
+
+| <h3>Profile Page </h3>| <h3>Job Details </h3>|
+|:-------------:|:-----------:|
+| <br><img src="https://res.cloudinary.com/dd5zrwqzj/image/upload/v1740375533/Screenshot_2025-02-24_at_11.07.32_AM_neqi5t.png" width="500px" /> |<br><img src="https://res.cloudinary.com/dd5zrwqzj/image/upload/v1740375533/Screenshot_2025-02-24_at_11.07.43_AM_xbqzia.png" width="500px" /> |
+
+
+
 ## Features
  **User Authentication** (Register, Login, Logout, Role-based access)  
  **Job Listings** (View, Search, Filter jobs)  
