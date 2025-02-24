@@ -108,7 +108,7 @@ The server will run on `http://localhost:8000`
 
 ```
 backend/
-│── config/             # Configuration files (DB, cloudinary, etc.)
+│── config/            # Configuration files (DB, cloudinary, etc.)
 │── controllers/       # Request handlers (auth, user, jobs, applications)
 │── middleware/        # Middleware functions (auth, error handling)
 │── models/            # Mongoose schemas (User, Job, Application)
