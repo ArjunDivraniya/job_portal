@@ -3,7 +3,7 @@ import Navbar from '../shared/Navbar';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { JOB_API_END_POINT } from '@/utils/constant';
+import { JOB_API_END_POINT } from '../../utils/constant.js';
 import { toast } from 'sonner';
 import {
     Button,

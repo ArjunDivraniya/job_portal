@@ -6,9 +6,10 @@ import LatestJobs from './LatestJobs.jsx'
 import Footer from './shared/Footer.jsx'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import useGetAllAdminJobs from '../hooks/useGetAllAdminJobs.jsx'
 
 function Home() {
-  useGetAllJobs();
+  useGetAllAdminJobs();
   const { user } = useSelector(store => store.auth);
   const navigate = useNavigate();
   useEffect(() => {

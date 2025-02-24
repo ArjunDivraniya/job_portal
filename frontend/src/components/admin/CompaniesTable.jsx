@@ -37,16 +37,24 @@ const CompaniesTable = () => {
     };
 
     return (
-        <TableContainer component={Paper} sx={{ borderRadius: 2, boxShadow: 2, maxWidth: '80%', margin: '0 auto' }}>
+        <TableContainer
+            component={Paper}
+            sx={{
+                borderRadius: 4,
+                maxWidth: '90%',
+                margin: '20px auto',
+                overflow: 'hidden',
+            }}
+        >
             <Table>
                 <TableHead>
                     <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
-                        <TableCell sx={{ fontWeight: 'bold', padding: '16px', width: '20%' }}>Company Name</TableCell>
-                        <TableCell sx={{ fontWeight: 'bold', padding: '16px', width: '15%' }}>Email</TableCell>
-                        <TableCell sx={{ fontWeight: 'bold', padding: '16px', width: '10%' }}>Contact</TableCell>
-                        <TableCell sx={{ fontWeight: 'bold', padding: '16px', width: '20%' }}>Website</TableCell>
-                        <TableCell sx={{ fontWeight: 'bold', padding: '16px', width: '15%' }}>Founded</TableCell>
-                        <TableCell align="right" sx={{ fontWeight: 'bold', padding: '16px', width: '10%' }}>Action</TableCell>
+                        <TableCell sx={{ fontWeight: 'bold', padding: '16px', color: '#333', fontSize: '16px' }}>Company Name</TableCell>
+                        <TableCell sx={{ fontWeight: 'bold', padding: '16px', color: '#333', fontSize: '16px' }}>Email</TableCell>
+                        <TableCell sx={{ fontWeight: 'bold', padding: '16px', color: '#333', fontSize: '16px' }}>Contact</TableCell>
+                        <TableCell sx={{ fontWeight: 'bold', padding: '16px', color: '#333', fontSize: '16px' }}>Website</TableCell>
+                        <TableCell sx={{ fontWeight: 'bold', padding: '16px', color: '#333', fontSize: '16px' }}>Founded</TableCell>
+                        <TableCell align="right" sx={{ fontWeight: 'bold', padding: '16px', color: '#333', fontSize: '16px' }}>Action</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -54,25 +62,44 @@ const CompaniesTable = () => {
                         <TableRow
                             key={company._id}
                             sx={{
-                                '&:nth-of-type(odd)': { backgroundColor: '#fafafa' },
-                                '&:hover': { backgroundColor: '#f0f0f0', cursor: 'pointer' }
+                                '&:nth-of-type(odd)': { backgroundColor: '#f9f9f9' },
+                                '&:hover': { backgroundColor: '#f0f0f0', cursor: 'pointer' },
+                                transition: 'background-color 0.3s ease',
                             }}
                         >
-                            <TableCell sx={{ padding: '12px' }}>{company.name}</TableCell>
-                            <TableCell sx={{ padding: '12px' }}>{company.email}</TableCell>
-                            <TableCell sx={{ padding: '12px' }}>{company.contact}</TableCell>
-                            <TableCell sx={{ padding: '12px' }}>
+                            <TableCell sx={{ padding: '12px', fontSize: '14px' }}>{company.name}</TableCell>
+                            <TableCell sx={{ padding: '12px', fontSize: '14px' }}>{company.email}</TableCell>
+                            <TableCell sx={{ padding: '12px', fontSize: '14px' }}>{company.contact}</TableCell>
+                            <TableCell sx={{ padding: '12px', fontSize: '14px' }}>
                                 {company.website ? (
-                                    <a href={company.website} target="_blank" rel="noopener noreferrer" style={{ color: '#1976d2', textDecoration: 'none' }}>
+                                    <a
+                                        href={company.website}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        style={{
+                                            color: '#1976d2',
+                                            textDecoration: 'none',
+                                            fontWeight: 'bold',
+                                        }}
+                                    >
                                         {company.website}
                                     </a>
                                 ) : (
                                     'N/A'
                                 )}
                             </TableCell>
-                            <TableCell sx={{ padding: '12px' }}>{company.founded}</TableCell>
-                            <TableCell align="right" sx={{ padding: '12px' }}>
-                                <IconButton onClick={(event) => handleClick(event, company._id)} sx={{ '&:hover': { backgroundColor: '#e0e0e0' } }}>
+                            <TableCell sx={{ padding: '12px', fontSize: '14px' }}>{company.founded}</TableCell>
+                            <TableCell align="right" sx={{ padding: '12px', fontSize: '14px' }}>
+                                <IconButton
+                                    onClick={(event) => handleClick(event, company._id)}
+                                    sx={{
+                                        '&:hover': {
+                                            backgroundColor: '#e0e0e0',
+                                            borderRadius: '4px',
+                                        },
+                                        padding: '8px',
+                                    }}
+                                >
                                     <MoreVertIcon />
                                 </IconButton>
                                 <Menu

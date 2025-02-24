@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { AppBar, Toolbar, Typography, TextField, Button, Container } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { COMPANY_API_END_POINT } from '@/utils/constant';
+import { COMPANY_API_END_POINT } from '../../utils/constant.js';
 import { toast } from 'sonner';
 import { useDispatch } from 'react-redux';
 import { setSingleCompany } from '../../redux/companySlice.js';

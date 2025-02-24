@@ -1,13 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { Button, TextField, CircularProgress, Container, Typography, Grid, Paper, IconButton } from '@mui/material';
+import {
+    Button,
+    TextField,
+    CircularProgress,
+    Container,
+    Typography,
+    Paper,
+    IconButton,
+    Box
+} from '@mui/material';
 import { ArrowBack } from '@mui/icons-material';
 import Navbar from '../shared/Navbar';
 import axios from 'axios';
-import { COMPANY_API_END_POINT } from '@/utils/constant';
+import { COMPANY_API_END_POINT } from '../../utils/constant.js';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useSelector } from 'react-redux';
-import useGetCompanyById from '@/hooks/useGetCompanyById';
+import useGetCompanyById from '../../hooks/useGetCompanyById.jsx';
 
 const CompanySetup = () => {
     const params = useParams();
@@ -80,8 +89,8 @@ const CompanySetup = () => {
                     </IconButton>
                     <Typography variant="h5" fontWeight="bold">Company Setup</Typography>
                     <form onSubmit={submitHandler}>
-                        <Grid container spacing={2} sx={{ mt: 2 }}>
-                            <Grid item xs={12} sm={6}>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
+                            <Box sx={{ display: 'flex', gap: 2 }}>
                                 <TextField
                                     label="Company Name"
                                     fullWidth
@@ -89,8 +98,6 @@ const CompanySetup = () => {
                                     value={input.name}
                                     onChange={changeEventHandler}
                                 />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
                                 <TextField
                                     label="Description"
                                     fullWidth
@@ -98,8 +105,8 @@ const CompanySetup = () => {
                                     value={input.description}
                                     onChange={changeEventHandler}
                                 />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
+                            </Box>
+                            <Box sx={{ display: 'flex', gap: 2 }}>
                                 <TextField
                                     label="Website"
                                     fullWidth
@@ -107,8 +114,6 @@ const CompanySetup = () => {
                                     value={input.website}
                                     onChange={changeEventHandler}
                                 />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
                                 <TextField
                                     label="Location"
                                     fullWidth
@@ -116,15 +121,15 @@ const CompanySetup = () => {
                                     value={input.location}
                                     onChange={changeEventHandler}
                                 />
-                            </Grid>
-                            <Grid item xs={12}>
+                            </Box>
+                            <Box>
                                 <input
                                     type="file"
                                     accept="image/*"
                                     onChange={changeFileHandler}
                                 />
-                            </Grid>
-                        </Grid>
+                            </Box>
+                        </Box>
                         <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 2 }} disabled={loading}>
                             {loading ? <CircularProgress size={24} /> : 'Update'}
                         </Button>
