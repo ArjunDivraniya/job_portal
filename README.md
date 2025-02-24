@@ -11,6 +11,51 @@
 * **Backend Repo**: [GitHub - Backend](https://github.com/Priyasha-Yadav/Job-Portal/tree/main/backend)
 * **Frontend Repo**: [GitHub - Frontend](https://github.com/Priyasha-Yadav/Job-Portal/tree/main/frontend)  
 
+_For more detailed setup and usage instructions, visit the respective **[Frontend README](https://github.com/Priyasha-Yadav/Job-Portal/tree/main/frontend/README.md)** and **[Backend README](https://github.com/Priyasha-Yadav/Job-Portal/tree/main/backend/README.md)** files._
+
+## Tech Stack 🖥️
+
+* **Backend**: Node.js, Express.js
+* **Database**: MongoDB with Mongoose for data modeling
+* **Authentication**: JWT (JSON Web Token) for secure user authentication
+* **Cloud Storage (Optional)**: Cloudinary or Firebase for resume and file uploads.
+* **Real-time Updates & Notifications**: Firebase/Netlify/Render for real-time notifications (for job application status, job alerts).
+* **Prototyping**: Figma for UI/UX design
+* **Other**: dotenv (for environment variables), bcryptjs (for password hashing), multer (for file uploads), Winston (for logging) 
+
+## **📂 Folder Structure**
+
+The project is split into two main folders: `frontend` and `backend` .
+
+```bash
+
+├── backend/                     # Backend  
+│   ├── controllers/
+│   ├── models/
+│   ├── middlewares/
+│   ├── routes/
+│   ├── utils/         
+│   ├── server.js
+│   ├── app.js
+│   ├── package.json
+│   ├── package-lock.json
+├── frontend/                    # Frontend    
+│── public/             
+│── src/
+│   │── components/     
+│   │── hooks/          
+│   │── redux/          
+│   │── utils/          
+│   │── App.jsx         
+│   │── main.jsx        
+│── eslint.config.js    
+│── index.html          
+│── package.json        
+│── README.md           
+│── vite.config.js      
+└── README.md                    # README.md 
+```
+
 ## Features ✨
 
 ### Job Seekers:
@@ -34,96 +79,6 @@
 * **Application Management** 📝: Job seekers can apply for jobs, and employers can manage applicants.
 * **Role-based Access Control** 🛡️: Admins can manage the platform, while employers and job seekers have access to specific features.
 * **Company Registration** 🏢: Companies can register and update their company details.
-
-## Tech Stack 🖥️
-
-* **Backend**: Node.js, Express.js
-* **Database**: MongoDB with Mongoose for data modeling
-* **Authentication**: JWT (JSON Web Token) for secure user authentication
-* **Cloud Storage (Optional)**: Cloudinary or Firebase for resume and file uploads.
-* **Real-time Updates & Notifications**: Firebase/Netlify/Render for real-time notifications (for job application status, job alerts).
-* **Prototyping**: Figma for UI/UX design
-* **Other**: dotenv (for environment variables), bcryptjs (for password hashing), multer (for file uploads), Winston (for logging)
-
-## Installation ⚙️
-
-To get started with **Jobmentum**, follow these steps to set up the project locally:
-
-### Prerequisites 📋
-
-* **Node.js** (version 14+ recommended)
-* **MongoDB** (running locally or through MongoDB Atlas)
-
-### Steps to Install 🏗️
-
-1. Clone the repository:
-   
-
-```bash
-   git clone https://github.com/yourusername/jobmentum.git
-
-   ```
-
-2. Navigate to the project directory:
-
-```bash
-cd job_portal
-```
-
-3. Install the dependencies:
-
-```bash
-npm install
-```
-
-4. Create a .env file in the root directory and set the following environment variables:
-
-```bash
-DB_URI=your_mongodb_connection_string
-SECRET_KEY=your_jwt_secret_key
-PORT=your_port
-
-```
-
-5. Start the server:
-
-```bash
-npm start
-```
-
-6. To set up the frontend, navigate to the frontend directory and follow the same steps:
-
-```bash
-cd frontend
-npm install
-npm start
-```
-
-## **📂 Folder Structure**
-
-The project is split into two main folders: `frontend` and `backend` .
-
-```bash
-
-├── backend/
-│   ├── controllers/
-│   ├── models/
-│   ├── middlewares/
-│   ├── routes/
-│   ├── utils/         
-│   ├── server.js
-│   ├── app.js
-│   ├── package.json
-│   ├── package-lock.json
-├── frontend/
-│   ├── src/
-│   ├── assets/
-│   ├── components/
-│   ├── utils/         
-│   ├── App.jsx    
-├── README.md
-└── LICENSE
-```
 
 ## **🎯 Contributing**
 
