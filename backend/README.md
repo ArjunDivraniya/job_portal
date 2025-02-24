@@ -107,6 +107,9 @@ backend/
 │── routes/            # API routes (auth, user, jobs, applications)
 │── utils/             # Utility functions (file upload, JWT, etc.)
 │── .env               # Environment variables (ignored in Git)
+│── node_modules/      # Dependencies
+│── .gitignore         # Ignored files
+│── package.json       # Dependencies & scripts
 │── app.js             # Express app setup
 │── server.js          # Entry point (server setup)
 │── package.json       # Dependencies and scripts
