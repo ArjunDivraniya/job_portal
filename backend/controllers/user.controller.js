@@ -200,7 +200,7 @@ export const updateProfile = async (req, res) => {
         // Update user data
         user.fullname = fullname || user.fullname;
         user.email = email || user.email;
-        user.bio = bio || user.bio;
+        user.profile.bio = bio || user.bio;
         user.phoneNumber = phoneNumber || user.phoneNumber;
         user.profile.skills = skillsArray.length > 0 ? skillsArray : user.profile.skills;
         user.profile.resume = resumeUrl;
