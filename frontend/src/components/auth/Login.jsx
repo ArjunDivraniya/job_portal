@@ -63,7 +63,7 @@ function Login() {
                 // Redirect after a short delay (if needed)
                 setTimeout(() => navigate("/"), 1000);
             
-                dispatch(setUser(res.data.success));
+                dispatch(setUser(res.data.user));
             }
             
 

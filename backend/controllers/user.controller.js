@@ -76,7 +76,7 @@ export const register = async (req, res) => {
 // Login user
 export const login = async (req, res) => {
     try {
-      
+
         const { email, password, role } = req.body;
 
         if (!email || !password || !role) {
@@ -113,14 +113,26 @@ export const login = async (req, res) => {
         const tokenData = { userId: user._id };
         const token = await jwt.sign(tokenData, process.env.SECRET_KEY, { expiresIn: "7 days" });
 
+
         // Send token in cookie
         return res.status(200).cookie("token", token, {
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
             httpOnly: true,
-            sameSite: 'strict',
+            sameSite: "None",
+            secure: true,
+
+
         }).json({
             message: `Welcome ${user.fullname}`,
-            success: true
+            success: true,
+            user: {
+                _id: user._id,
+                fullname: user.fullname,
+                email: user.email,
+                phoneNumber: user.phoneNumber,
+                role: user.role,
+                profile: user.profile
+            }
         });
 
     } catch (error) {
@@ -144,7 +156,7 @@ export const logout = async (req, res) => {
         return res.status(500).json({
             message: "Server error",
             success: false
-        }); 
+        });
     }
 };
 
@@ -152,7 +164,7 @@ export const logout = async (req, res) => {
 export const updateProfile = async (req, res) => {
     try {
         console.log("Update Profile API Triggered");
-        
+
         // Log Request User & Body
         console.log("Authenticated User ID:", req.userId);
         console.log("Request Body:", req.body);
@@ -188,7 +200,7 @@ export const updateProfile = async (req, res) => {
         // Update user data
         user.fullname = fullname || user.fullname;
         user.email = email || user.email;
-        user.bio = bio || user.bio;
+        user.profile.bio = bio || user.profile.bio;
         user.phoneNumber = phoneNumber || user.phoneNumber;
         user.profile.skills = skillsArray.length > 0 ? skillsArray : user.profile.skills;
         user.profile.resume = resumeUrl;
@@ -210,7 +222,7 @@ export const updateProfile = async (req, res) => {
 
     } catch (error) {
         console.error("Update Profile Error:", error);
-        
+
         return res.status(500).json({ success: false, message: "Internal Server Error", error: error.message });
     }
 };
