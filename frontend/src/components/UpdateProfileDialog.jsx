@@ -3,7 +3,7 @@ import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, C
 import axios from 'axios';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { useDispatch, useSelector } from 'react-redux';
-import { toast } from 'sonner';
+import { toast, Toaster } from 'sonner';
 import { setUser } from '../redux/authSlice.js';
 import { USER_API_END_POINT } from '../utils/constant.js';
 
@@ -16,7 +16,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
     email: user?.email || "",
     phoneNumber: user?.phoneNumber || "",
     bio: user?.profile?.bio || "",
-    skills: user?.profile?.skills || [],
+    skills: user?.profile?.skills?.map(skill => skill) || "",
     resume: user?.profile?.resume || null
   });
 
@@ -24,40 +24,36 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
   const [loading, setLoading] = useState(false);
 
   // Close dialog
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const handleClose = () => setOpen(false);
 
   // Save profile updates
   const handleSave = async (e) => {
     e.preventDefault();
     setLoading(true);
 
+    const updatedBio = input.bio.trim() === "" ? "No bio available" : input.bio;
+
     const formData = new FormData();
     formData.append("fullname", input.fullname);
     formData.append("email", input.email);
     formData.append("phoneNumber", input.phoneNumber);
-    formData.append("bio", input.bio);
-    formData.append("skills", JSON.stringify(input.skills));
-
+    formData.append("bio", updatedBio);
+    formData.append("skills", input.skills);
     if (input.resume) {
       formData.append("file", input.resume);
     }
 
     try {
       const res = await axios.post(
-        `${USER_API_END_POINT}/profile/update`, 
+       `${USER_API_END_POINT}/profile/update`,
         formData,
-        {
-          headers: { 'Content-Type': 'multipart/form-data' },
-          withCredentials: true,
-        }
+        { headers: { 'Content-Type': 'multipart/form-data' }, withCredentials: true }
       );
 
       if (res.data.success) {
         dispatch(setUser(res.data.user));
         toast.success("Profile updated successfully!");
-        setOpen(false);
+        setTimeout(() => setOpen(false), 1500);
       }
     } catch (error) {
       console.error('Error:', error);
@@ -67,32 +63,13 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
     }
   };
 
-  // Handle skill addition
-  const handleSkillChange = (event) => {
-    if (event.key === 'Enter' && event.target.value.trim()) {
-      const newSkill = event.target.value.trim();
-      if (!input.skills.includes(newSkill)) {
-        setInput((prev) => ({
-          ...prev,
-          skills: [...prev.skills, newSkill],
-        }));
-      }
-      event.target.value = ''; // Clear input
-      event.preventDefault(); // Prevent form submission
-    }
-  };
-
-  // Remove skill from list
-  const handleRemoveSkill = (skillToRemove) => {
-    setInput((prev) => ({
-      ...prev,
-      skills: prev.skills.filter(skill => skill !== skillToRemove),
-    }));
-  };
+  const changeEventHandler = (e) => {
+    setInput({ ...input, [e.target.name]: e.target.value });
+}
 
   // Handle file upload
   const handleFileChange = (event) => {
-    const file = event.target.files[0];
+    const file = event.target.files?.[0];
     const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
 
     if (file && allowedTypes.includes(file.type)) {
@@ -108,70 +85,38 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>Update Profile</DialogTitle>
       <DialogContent>
-        <TextField 
-          label="Full Name" 
-          fullWidth 
-          value={input.fullname}  
-          onChange={(e) => setInput({ ...input, fullname: e.target.value })}  
-          margin="normal" 
+        <TextField label="Full Name" fullWidth value={input.fullname}
+          onChange={(e) => setInput({ ...input, fullname: e.target.value })}
+          margin="normal"
         />
 
-        <TextField 
-          label="Email" 
-          fullWidth 
-          value={input.email}  
-          onChange={(e) => setInput({ ...input, email: e.target.value })}  
-          margin="normal" 
+        <TextField label="Email" fullWidth value={input.email}
+          onChange={(e) => setInput({ ...input, email: e.target.value })}
+          margin="normal"
         />
 
-        <TextField 
-          label="Phone Number" 
-          fullWidth 
-          value={input.phoneNumber}  
-          onChange={(e) => setInput({ ...input, phoneNumber: e.target.value })}  
-          margin="normal" 
+        <TextField label="Phone Number" fullWidth value={input.phoneNumber}
+          onChange={(e) => setInput({ ...input, phoneNumber: e.target.value })}
+          margin="normal"
         />
 
-        <TextField 
-          label="Bio" 
-          fullWidth 
-          multiline 
-          rows={4} 
-          value={input.bio} 
-          onChange={(e) => setInput({ ...input, bio: e.target.value })}  
-          margin="normal" 
+        <TextField label="Bio" fullWidth multiline rows={4} value={input.bio}
+          onChange={(e) => setInput({ ...input, bio: e.target.value })}
+          margin="normal"
         />
 
-        <TextField 
-          label="Skills" 
-          fullWidth 
-          onKeyDown={handleSkillChange} 
-          margin="normal" 
-          placeholder="Press Enter to add skill" 
+        <TextField label="Skills" fullWidth onKeyDown={changeEventHandler}
+          margin="normal" placeholder="Press Enter to add skill"
         />
-        <Box mt={2} sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-          {input.skills.map((skill, index) => (
-            <Chip 
-              key={index} 
-              label={skill} 
-              color="primary" 
-              onDelete={() => handleRemoveSkill(skill)} 
-              sx={{ marginRight: 1, marginBottom: 1 }} 
-            />
-          ))}
-        </Box>
+        
 
         <Box mt={3} sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
           <Typography variant="body2" color="textSecondary">
             Upload Resume (PDF, DOC, DOCX)
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <input 
-              type="file" 
-              id="file-upload" 
-              style={{ display: 'none' }} 
-              onChange={handleFileChange} 
-              accept=".pdf,.doc,.docx" 
+            <input type="file" id="file-upload" style={{ display: 'none' }}
+              onChange={handleFileChange} accept=".pdf,.doc,.docx"
             />
             <label htmlFor="file-upload">
               <Button variant="contained" component="span" color="primary">
@@ -184,23 +129,23 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
           {input.resume && (
             <Box mt={2} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <Typography variant="body2" color="textPrimary">Selected file: {input.resume.name}</Typography>
-              <Button variant="text" color="secondary" onClick={() => setInput({ ...input, resume: null })}>Remove Resume</Button>
+              <Button variant="text" color="secondary" onClick={() => setInput({ ...input, resume: null })}>
+                Remove Resume
+              </Button>
             </Box>
           )}
         </Box>
       </DialogContent>
 
-      <DialogActions >
+      <DialogActions>
         <Button onClick={handleClose} color="secondary" variant="contained" sx={{ margin: '0 10px 16px 16px' }}>Cancel</Button>
-        <Button sx={{ margin: '0 16px 16px 16px' }}
-          onClick={handleSave}
-          color="primary"
-          variant="contained"
-          disabled={loading}
+        <Button sx={{ margin: '0 16px 16px 16px' }} onClick={handleSave}
+          color="primary" variant="contained" disabled={loading}
           startIcon={loading ? <CircularProgress size={20} color="inherit" /> : null}
         >
           {loading ? "Saving..." : "Save"}
         </Button>
+        <Toaster position="bottom-right" />
       </DialogActions>
     </Dialog>
   );
