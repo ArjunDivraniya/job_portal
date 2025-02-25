@@ -162,8 +162,6 @@ export const logout = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
     try {
-        console.log("🔹 Received Body:", req.body);
-        console.log("🔹 Received Files:", req.files);
 
         // Ensure authentication works
         if (!req.userId) {
@@ -180,7 +178,7 @@ export const updateProfile = async (req, res) => {
         let skillsArray = skills ? skills.split(",").map(skill => skill.trim()) : [];
 
         // Declare profilePhotoUrl
-        let profilePhotoUrl = user.profilePhoto || null;
+        let profilePhotoUrl = user.profile.profilePhoto || null;
         let resumeUrl = user.profile?.resume || null;
 
         // File Handling (Profile Photo)
@@ -214,15 +212,15 @@ export const updateProfile = async (req, res) => {
         user.fullname = fullname || user.fullname;
         user.email = email || user.email;
         user.phoneNumber = phoneNumber || user.phoneNumber;
-        user.bio = bio || user.bio;
-        user.skills = skillsArray.length > 0 ? skillsArray : user.skills;
-        user.resume = resumeUrl;
+        user.profile.bio = bio || user.bio;
+        user.profile.skills = skillsArray.length > 0 ? skillsArray : user.skills;
+        user.profile.resume = resumeUrl;
 
         console.log("Existing Profile Photo:", user.profilePhoto);
         console.log("New Profile Photo URL:", profilePhotoUrl);
 
         if (profilePhotoUrl) {
-            user.profilePhoto = profilePhotoUrl;
+            user.profile.profilePhoto = profilePhotoUrl;
         }
 
         console.log("Updated Profile Photo in User Object:", user.profilePhoto);
@@ -238,10 +236,10 @@ export const updateProfile = async (req, res) => {
                 email: user.email,
                 phoneNumber: user.phoneNumber,
                 role: user.role,
-                profilePhoto: user.profilePhoto,
+                profilePhoto: user.profile.profilePhoto,
                 resume: user.resume,
-                bio: user.bio,
-                skills: user.skills,
+                bio: user.profile.bio,
+                skills: user.profile.skills,
             },
         });
     } catch (error) {
