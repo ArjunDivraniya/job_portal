@@ -5,7 +5,7 @@ The frontend for **Jobmentum**, a modern job application and recruitment platfor
 
 ## **🔗 Key Links**
 
-* **Prototype**: [Figma Prototype](#)
+* **Prototype**: [Figma Prototype](https://www.figma.com/design/rCJvmrMjiTtu9J3uqajM6z/Untitled?node-id=0-1&t=MmPrtzaCHJlxW7zw-1)
 * **Frontend**: [Frontend](https://jomentum.netlify.app)
 * **Frontend Repo**: [GitHub - Frontend](https://github.com/Priyasha-Yadav/Job-Portal/tree/main/frontend)  
 

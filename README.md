@@ -4,7 +4,7 @@
 
 ## **🔗 Key Links**
 
-* **Prototype**: [Figma Prototype](#)
+* **Prototype**: [Figma Prototype](https://www.figma.com/design/rCJvmrMjiTtu9J3uqajM6z/Untitled?node-id=0-1&t=MmPrtzaCHJlxW7zw-1)
 * **Node Server**: [Backend](https://jobmentum.onrender.com)
 * **Frontend**: [Frontend](https://jomentum.netlify.app)
 * **Documentation:** [API Documentation](https://documenter.getpostman.com/view/39189648/2sAYX9kzJW)
