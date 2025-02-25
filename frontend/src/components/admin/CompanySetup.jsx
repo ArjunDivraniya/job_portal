@@ -70,14 +70,28 @@ const CompanySetup = () => {
     };
 
     useEffect(() => {
-        setInput({
-            name: singleCompany.name || '',
-            description: singleCompany.description || '',
-            website: singleCompany.website || '',
-            location: singleCompany.location || '',
-            file: singleCompany.file || null
-        });
+        if (singleCompany) {
+            setInput({
+                name: singleCompany.name || '',
+                description: singleCompany.description || '',
+                website: singleCompany.website || '',
+                location: singleCompany.location || '',
+                file: singleCompany.file || null
+            });
+        }
     }, [singleCompany]);
+
+    // Handle loading state
+    if (!singleCompany) {
+        return (
+            <div>
+                <Navbar />
+                <Container maxWidth="sm" sx={{ mt: 4 }}>
+                    <CircularProgress />
+                </Container>
+            </div>
+        );
+    }
 
     return (
         <div>
@@ -148,7 +162,6 @@ const CompanySetup = () => {
                                     </Typography>
                                 )}
                             </Box>
-
                         </Box>
                         <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 3 }} disabled={loading}>
                             {loading ? <CircularProgress size={24} /> : 'Update'}
