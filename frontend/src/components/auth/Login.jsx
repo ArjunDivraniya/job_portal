@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../shared/Navbar';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -80,13 +80,18 @@ function Login() {
         } finally {
             dispatch(setLoading(false)); // Set loading state to false after the request completes
         }
-
+        
         // Validate form fields
         if (!input.email || !input.password) {
             alert('Please fill in all the fields.');
             return;
         }
     };
+    useEffect(() => {
+        if(user){
+            navigate('/');
+        }
+    });
 
     return (
         <>
