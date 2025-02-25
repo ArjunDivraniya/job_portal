@@ -223,9 +223,14 @@ export const updateProfile = async (req, res) => {
         user.profile.bio = bio || user.profile.bio;
         user.profile.skills = skillsArray.length > 0 ? skillsArray : user.profile.skills;
         user.profile.resume = resumeUrl;
+        console.log("Existing Profile Photo:", user.profile.profilePhoto);
+        console.log("New Profile Photo URL:", profilePicUrl);
+        
         if (profilePicUrl) {
             user.profile.profilePhoto = profilePicUrl;
         }
+        console.log("Updated Profile Photo in User Object:", user.profile.profilePhoto);
+        
 
         await user.save();
 
