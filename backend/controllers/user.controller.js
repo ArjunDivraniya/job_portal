@@ -204,7 +204,9 @@ export const updateProfile = async (req, res) => {
         user.phoneNumber = phoneNumber || user.phoneNumber;
         user.profile.skills = skillsArray.length > 0 ? skillsArray : user.profile.skills;
         user.profile.resume = resumeUrl;
-
+        if (profilePicUrl) {
+            user.profile.picture = profilePicUrl; 
+        }
         await user.save();
 
         return res.status(200).json({
