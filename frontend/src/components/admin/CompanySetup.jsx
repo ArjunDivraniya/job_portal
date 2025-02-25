@@ -9,7 +9,7 @@ import {
     IconButton,
     Box
 } from '@mui/material';
-import { ArrowBack } from '@mui/icons-material';
+import { ArrowBack, CloudUpload } from '@mui/icons-material';
 import Navbar from '../shared/Navbar';
 import axios from 'axios';
 import { COMPANY_API_END_POINT } from '../../utils/constant.js';
@@ -122,15 +122,35 @@ const CompanySetup = () => {
                                     onChange={changeEventHandler}
                                 />
                             </Box>
-                            <Box>
+
+                            {/* File Upload Section */}
+                            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 2 }}>
                                 <input
-                                    type="file"
                                     accept="image/*"
+                                    style={{ display: 'none' }}
+                                    id="file-upload"
+                                    type="file"
                                     onChange={changeFileHandler}
                                 />
+                                <label htmlFor="file-upload">
+                                    <Button
+                                        variant="contained"
+                                        color="secondary"
+                                        component="span"
+                                        startIcon={<CloudUpload />}
+                                    >
+                                        Choose File
+                                    </Button>
+                                </label>
+                                {input.file && (
+                                    <Typography variant="body2" sx={{ mt: 1, color: 'gray' }}>
+                                        Selected: {input.file.name}
+                                    </Typography>
+                                )}
                             </Box>
+
                         </Box>
-                        <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 2 }} disabled={loading}>
+                        <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 3 }} disabled={loading}>
                             {loading ? <CircularProgress size={24} /> : 'Update'}
                         </Button>
                     </form>

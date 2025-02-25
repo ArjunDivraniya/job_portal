@@ -1,6 +1,20 @@
 import React from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Menu, MenuItem } from '@mui/material';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper,
+    IconButton,
+    Menu,
+    MenuItem,
+    Tooltip,
+    Box
+} from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import EditIcon from '@mui/icons-material/Edit';  // New import for Edit icon
 import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
 import axios from 'axios';
@@ -21,101 +35,101 @@ const CompaniesTable = () => {
         setSelectedCompany(null);
     };
 
-    const handleStatusUpdate = async (status) => {
+    const handleEditCompany = async () => {
         if (!selectedCompany) return;
-        try {
-            axios.defaults.withCredentials = true;
-            const res = await axios.post(`${COMPANY_API_END_POINT}/status/${selectedCompany}/update`, { status });
-            if (res.data.success) {
-                toast.success(res.data.message);
-            }
-        } catch (error) {
-            toast.error(error.response?.data?.message || 'An error occurred');
-        } finally {
-            handleClose();
-        }
+
+        // Handle the "Edit" action. For example, you can navigate to an edit page.
+        // You can also open a modal or form to edit the company's details.
+        toast.info('Navigating to edit page...');
+        // For example, you might use `history.push(`/admin/companies/${selectedCompany}/edit`)` 
+        // if you are using React Router, or open a modal for editing.
+        
+        handleClose();  // Close the menu after the action is done.
     };
 
     return (
-        <TableContainer
-            component={Paper}
-            sx={{
-                borderRadius: 4,
-                maxWidth: '90%',
-                margin: '20px auto',
-                overflow: 'hidden',
-            }}
-        >
-            <Table>
-                <TableHead>
-                    <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
-                        <TableCell sx={{ fontWeight: 'bold', padding: '16px', color: '#333', fontSize: '16px' }}>Company Name</TableCell>
-                        <TableCell sx={{ fontWeight: 'bold', padding: '16px', color: '#333', fontSize: '16px' }}>Email</TableCell>
-                        <TableCell sx={{ fontWeight: 'bold', padding: '16px', color: '#333', fontSize: '16px' }}>Contact</TableCell>
-                        <TableCell sx={{ fontWeight: 'bold', padding: '16px', color: '#333', fontSize: '16px' }}>Website</TableCell>
-                        <TableCell sx={{ fontWeight: 'bold', padding: '16px', color: '#333', fontSize: '16px' }}>Founded</TableCell>
-                        <TableCell align="right" sx={{ fontWeight: 'bold', padding: '16px', color: '#333', fontSize: '16px' }}>Action</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {companies?.map((company) => (
-                        <TableRow
-                            key={company._id}
-                            sx={{
-                                '&:nth-of-type(odd)': { backgroundColor: '#f9f9f9' },
-                                '&:hover': { backgroundColor: '#f0f0f0', cursor: 'pointer' },
-                                transition: 'background-color 0.3s ease',
-                            }}
-                        >
-                            <TableCell sx={{ padding: '12px', fontSize: '14px' }}>{company.name}</TableCell>
-                            <TableCell sx={{ padding: '12px', fontSize: '14px' }}>{company.email}</TableCell>
-                            <TableCell sx={{ padding: '12px', fontSize: '14px' }}>{company.contact}</TableCell>
-                            <TableCell sx={{ padding: '12px', fontSize: '14px' }}>
-                                {company.website ? (
-                                    <a
-                                        href={company.website}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        style={{
-                                            color: '#1976d2',
-                                            textDecoration: 'none',
-                                            fontWeight: 'bold',
-                                        }}
-                                    >
-                                        {company.website}
-                                    </a>
-                                ) : (
-                                    'N/A'
-                                )}
-                            </TableCell>
-                            <TableCell sx={{ padding: '12px', fontSize: '14px' }}>{company.founded}</TableCell>
-                            <TableCell align="right" sx={{ padding: '12px', fontSize: '14px' }}>
-                                <IconButton
-                                    onClick={(event) => handleClick(event, company._id)}
-                                    sx={{
-                                        '&:hover': {
-                                            backgroundColor: '#e0e0e0',
-                                            borderRadius: '4px',
-                                        },
-                                        padding: '8px',
-                                    }}
-                                >
-                                    <MoreVertIcon />
-                                </IconButton>
-                                <Menu
-                                    anchorEl={anchorEl}
-                                    open={Boolean(anchorEl && selectedCompany === company._id)}
-                                    onClose={handleClose}
-                                >
-                                    <MenuItem onClick={() => handleStatusUpdate('Approved')}>Approve</MenuItem>
-                                    <MenuItem onClick={() => handleStatusUpdate('Rejected')}>Reject</MenuItem>
-                                </Menu>
-                            </TableCell>
+        <Box sx={{ maxWidth: '95%', margin: 'auto', mt: 4 }}>
+            <TableContainer
+                component={Paper}
+                sx={{
+                    borderRadius: 4,
+                    boxShadow: 3,
+                    overflow: 'hidden',
+                }}
+            >
+                <Table>
+                    <TableHead>
+                        <TableRow sx={{ backgroundColor: '#1e1e1e' }}>
+                            <TableCell sx={{ fontWeight: 'bold', color: '#fff', padding: '16px' }}>Company Name</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold', color: '#fff', padding: '16px' }}>Email</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold', color: '#fff', padding: '16px' }}>Contact</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold', color: '#fff', padding: '16px' }}>Website</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold', color: '#fff', padding: '16px' }}>Founded</TableCell>
+                            <TableCell align="right" sx={{ fontWeight: 'bold', color: '#fff', padding: '16px' }}>Action</TableCell>
                         </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+                    </TableHead>
+                    <TableBody>
+                        {companies?.map((company) => (
+                            <TableRow
+                                key={company._id}
+                                sx={{
+                                    '&:nth-of-type(odd)': { backgroundColor: '#f8f9fa' },
+                                    '&:hover': { backgroundColor: '#e9ecef', transition: '0.3s ease' },
+                                }}
+                            >
+                                <TableCell sx={{ padding: '12px', fontSize: '14px', fontWeight: 500 }}>
+                                    {company.name}
+                                </TableCell>
+                                <TableCell sx={{ padding: '12px', fontSize: '14px' }}>{company.email}</TableCell>
+                                <TableCell sx={{ padding: '12px', fontSize: '14px' }}>{company.contact}</TableCell>
+                                <TableCell sx={{ padding: '12px', fontSize: '14px' }}>
+                                    {company.website ? (
+                                        <a
+                                            href={company.website}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            style={{
+                                                color: '#007bff',
+                                                textDecoration: 'none',
+                                                fontWeight: 'bold',
+                                            }}
+                                        >
+                                            {company.website}
+                                        </a>
+                                    ) : (
+                                        'N/A'
+                                    )}
+                                </TableCell>
+                                <TableCell sx={{ padding: '12px', fontSize: '14px' }}>{company.founded}</TableCell>
+                                <TableCell align="right" sx={{ padding: '12px' }}>
+                                    <Tooltip title="Actions" arrow>
+                                        <IconButton
+                                            onClick={(event) => handleClick(event, company._id)}
+                                            sx={{
+                                                '&:hover': { backgroundColor: '#dee2e6', borderRadius: '50%' },
+                                                padding: '8px',
+                                            }}
+                                        >
+                                            <MoreVertIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Menu
+                                        anchorEl={anchorEl}
+                                        open={Boolean(anchorEl && selectedCompany === company._id)}
+                                        onClose={handleClose}
+                                    >
+                                        {/* Edit action */}
+                                        <MenuItem onClick={handleEditCompany}>
+                                            <EditIcon sx={{ color: '#1876D1' , mr: 1 }} /> Edit
+                                        </MenuItem>
+                                    </Menu>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </Box>
     );
 };
 
