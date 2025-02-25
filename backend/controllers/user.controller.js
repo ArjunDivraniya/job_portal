@@ -159,6 +159,9 @@ export const logout = async (req, res) => {
         });
     }
 };
+
+
+
 export const updateProfile = async (req, res) => {
     try {
         console.log("Update Profile API Triggered");
@@ -182,23 +185,29 @@ export const updateProfile = async (req, res) => {
         const { fullname, email, phoneNumber, bio, skills } = req.body;
         let skillsArray = skills ? skills.split(",").map(skill => skill.trim()) : [];
 
+        // Ensure user profile exists
+        user.profile = user.profile || {};
+
         // File Handling (Resume and Profile Pic)
-        let profilePicUrl = user.profile?.picture || null;
-        if (req.files && req.files.profilePic) {
+        if (req.files && req.files["profilePhoto"]?.[0]) {
             try {
-                const fileUri = getDataUri(req.files.profilePic[0]);
+                console.log("Processing Profile Photo:", req.files["profilePhoto"][0]);
+                const fileUri = getDataUri(req.files["profilePhoto"][0]); 
+                console.log("Generated File URI:", fileUri); // Check if this is valid
                 const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+                console.log("Cloudinary Response:", cloudResponse);
                 profilePicUrl = cloudResponse.secure_url;
             } catch (fileError) {
                 console.error("Cloudinary Upload Error:", fileError);
                 return res.status(500).json({ success: false, message: "Profile picture upload failed", error: fileError.message });
             }
         }
+        
 
-        let resumeUrl = user.profile?.resume || null;
-        if (req.files && req.files.resume) {
+        let resumeUrl = user.profile.resume || null;
+        if (req.files && req.files["resume"]?.[0]) {
             try {
-                const fileUri = getDataUri(req.files.resume[0]);
+                const fileUri = getDataUri(req.files["resume"][0]);
                 const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
                 resumeUrl = cloudResponse.secure_url;
             } catch (fileError) {
@@ -210,14 +219,14 @@ export const updateProfile = async (req, res) => {
         // Update user data
         user.fullname = fullname || user.fullname;
         user.email = email || user.email;
-        user.profile.bio = bio || user.profile.bio;
         user.phoneNumber = phoneNumber || user.phoneNumber;
+        user.profile.bio = bio || user.profile.bio;
         user.profile.skills = skillsArray.length > 0 ? skillsArray : user.profile.skills;
         user.profile.resume = resumeUrl;
         if (profilePicUrl) {
-            user.profile.picture = profilePicUrl; 
+            user.profile.profilePhoto = profilePicUrl;
         }
-        
+
         await user.save();
 
         return res.status(200).json({
