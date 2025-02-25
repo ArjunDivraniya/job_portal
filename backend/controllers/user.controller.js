@@ -159,8 +159,6 @@ export const logout = async (req, res) => {
         });
     }
 };
-
-// Update profile
 export const updateProfile = async (req, res) => {
     try {
         console.log("Update Profile API Triggered");
@@ -168,7 +166,7 @@ export const updateProfile = async (req, res) => {
         // Log Request User & Body
         console.log("Authenticated User ID:", req.userId);
         console.log("Request Body:", req.body);
-        console.log("Uploaded File:", req.file);
+        console.log("Uploaded Files:", req.files);
 
         // Ensure authentication works
         if (!req.userId) {
@@ -184,11 +182,23 @@ export const updateProfile = async (req, res) => {
         const { fullname, email, phoneNumber, bio, skills } = req.body;
         let skillsArray = skills ? skills.split(",").map(skill => skill.trim()) : [];
 
-        // File Handling
-        let resumeUrl = user.profile?.resume || null;
-        if (req.file) {
+        // File Handling (Resume and Profile Pic)
+        let profilePicUrl = user.profile?.picture || null;
+        if (req.files && req.files.profilePic) {
             try {
-                const fileUri = getDataUri(req.file);
+                const fileUri = getDataUri(req.files.profilePic[0]);
+                const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+                profilePicUrl = cloudResponse.secure_url;
+            } catch (fileError) {
+                console.error("Cloudinary Upload Error:", fileError);
+                return res.status(500).json({ success: false, message: "Profile picture upload failed", error: fileError.message });
+            }
+        }
+
+        let resumeUrl = user.profile?.resume || null;
+        if (req.files && req.files.resume) {
+            try {
+                const fileUri = getDataUri(req.files.resume[0]);
                 const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
                 resumeUrl = cloudResponse.secure_url;
             } catch (fileError) {
@@ -207,6 +217,7 @@ export const updateProfile = async (req, res) => {
         if (profilePicUrl) {
             user.profile.picture = profilePicUrl; 
         }
+        
         await user.save();
 
         return res.status(200).json({
