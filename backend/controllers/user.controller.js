@@ -179,8 +179,8 @@ export const updateProfile = async (req, res) => {
         const { fullname, email, phoneNumber, bio, skills } = req.body;
         let skillsArray = skills ? skills.split(",").map(skill => skill.trim()) : [];
 
-        // Declare profilePicUrl
-        let profilePicUrl = user.profilePhoto || null;
+        // Declare profilePhotoUrl
+        let profilePhotoUrl = user.profilePhoto || null;
         let resumeUrl = user.profile?.resume || null;
 
         // File Handling (Profile Photo)
@@ -191,7 +191,7 @@ export const updateProfile = async (req, res) => {
                 console.log("Generated File URI:", fileUri); // Debug
                 const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
                 console.log("Cloudinary Response:", cloudResponse);
-                profilePicUrl = cloudResponse.secure_url;
+                profilePhotoUrl = cloudResponse.secure_url;
             } catch (fileError) {
                 console.error("Cloudinary Upload Error:", fileError);
                 return res.status(500).json({ success: false, message: "Profile picture upload failed", error: fileError.message });
@@ -219,10 +219,10 @@ export const updateProfile = async (req, res) => {
         user.resume = resumeUrl;
 
         console.log("Existing Profile Photo:", user.profilePhoto);
-        console.log("New Profile Photo URL:", profilePicUrl);
+        console.log("New Profile Photo URL:", profilePhotoUrl);
 
-        if (profilePicUrl) {
-            user.profilePhoto = profilePicUrl;
+        if (profilePhotoUrl) {
+            user.profilePhoto = profilePhotoUrl;
         }
 
         console.log("Updated Profile Photo in User Object:", user.profilePhoto);
