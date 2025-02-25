@@ -160,16 +160,10 @@ export const logout = async (req, res) => {
     }
 };
 
-
-
 export const updateProfile = async (req, res) => {
     try {
-        console.log("Update Profile API Triggered");
-
-        // Log Request User & Body
-        console.log("Authenticated User ID:", req.userId);
-        console.log("Request Body:", req.body);
-        console.log("Uploaded Files:", req.files);
+        console.log("🔹 Received Body:", req.body);
+        console.log("🔹 Received Files:", req.files);
 
         // Ensure authentication works
         if (!req.userId) {
@@ -185,15 +179,16 @@ export const updateProfile = async (req, res) => {
         const { fullname, email, phoneNumber, bio, skills } = req.body;
         let skillsArray = skills ? skills.split(",").map(skill => skill.trim()) : [];
 
-        // Ensure user profile exists
-        user.profile = user.profile || {};
+        // Declare profilePicUrl
+        let profilePicUrl = user.profilePhoto || null;
+        let resumeUrl = user.profile?.resume || null;
 
-        // File Handling (Resume and Profile Pic)
-        if (req.files && req.files["profilePhoto"]?.[0]) {
+        // File Handling (Profile Photo)
+        if (req.files?.profilePhoto?.[0]) {
             try {
-                console.log("Processing Profile Photo:", req.files["profilePhoto"][0]);
-                const fileUri = getDataUri(req.files["profilePhoto"][0]); 
-                console.log("Generated File URI:", fileUri); // Check if this is valid
+                console.log("Processing Profile Photo:", req.files.profilePhoto[0]);
+                const fileUri = getDataUri(req.files.profilePhoto[0]);
+                console.log("Generated File URI:", fileUri); // Debug
                 const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
                 console.log("Cloudinary Response:", cloudResponse);
                 profilePicUrl = cloudResponse.secure_url;
@@ -202,12 +197,11 @@ export const updateProfile = async (req, res) => {
                 return res.status(500).json({ success: false, message: "Profile picture upload failed", error: fileError.message });
             }
         }
-        
 
-        let resumeUrl = user.profile.resume || null;
-        if (req.files && req.files["resume"]?.[0]) {
+        // File Handling (Resume)
+        if (req.files?.resume?.[0]) {
             try {
-                const fileUri = getDataUri(req.files["resume"][0]);
+                const fileUri = getDataUri(req.files.resume[0]);
                 const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
                 resumeUrl = cloudResponse.secure_url;
             } catch (fileError) {
@@ -220,17 +214,18 @@ export const updateProfile = async (req, res) => {
         user.fullname = fullname || user.fullname;
         user.email = email || user.email;
         user.phoneNumber = phoneNumber || user.phoneNumber;
-        user.profile.bio = bio || user.profile.bio;
-        user.profile.skills = skillsArray.length > 0 ? skillsArray : user.profile.skills;
-        user.profile.resume = resumeUrl;
-        console.log("Existing Profile Photo:", user.profile.profilePhoto);
+        user.bio = bio || user.bio;
+        user.skills = skillsArray.length > 0 ? skillsArray : user.skills;
+        user.resume = resumeUrl;
+
+        console.log("Existing Profile Photo:", user.profilePhoto);
         console.log("New Profile Photo URL:", profilePicUrl);
-        
+
         if (profilePicUrl) {
-            user.profile.profilePhoto = profilePicUrl;
+            user.profilePhoto = profilePicUrl;
         }
-        console.log("Updated Profile Photo in User Object:", user.profile.profilePhoto);
-        
+
+        console.log("Updated Profile Photo in User Object:", user.profilePhoto);
 
         await user.save();
 
@@ -243,13 +238,14 @@ export const updateProfile = async (req, res) => {
                 email: user.email,
                 phoneNumber: user.phoneNumber,
                 role: user.role,
-                profile: user.profile
-            }
+                profilePhoto: user.profilePhoto,
+                resume: user.resume,
+                bio: user.bio,
+                skills: user.skills,
+            },
         });
-
     } catch (error) {
         console.error("Update Profile Error:", error);
-
         return res.status(500).json({ success: false, message: "Internal Server Error", error: error.message });
     }
 };
