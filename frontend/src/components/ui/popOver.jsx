@@ -68,8 +68,8 @@ export default function BasicPopover({ logoutHandler }) {
             <ImageAvatars sx={{ width: 40, height: 40, borderRadius: '50%' }} />
             <div>
               <h4 className="font-semibold text-lg">{user?.fullname}</h4> {/* Increased font weight for name */}
-              <div className="text-sm text-muted-foreground font-light">{user?.profile.bio}</div> {/* Lighter font for description */}
-            </div>
+              <div className="text-sm text-muted-foreground font-light">{user?.profile?.bio || "No bio available"}</div>
+              </div>
           </div>
 
           {/* Action Buttons */}

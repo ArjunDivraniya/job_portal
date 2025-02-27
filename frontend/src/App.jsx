@@ -14,6 +14,8 @@ import AdminJobs from './components/admin/AdminJobs.jsx'
 import PostJob from './components/admin/PostJob.jsx'
 import Applicants from './components/admin/Applicants.jsx'
 import ProtectedRoute from './components/admin/ProtectedRoute'
+import Notfound from './components/Notfound.jsx'
+
 
 const appRouter = createBrowserRouter([
   {
@@ -49,6 +51,10 @@ element: <JobDescription />
     element: <Profile />
   },
 
+  {
+    path: '/*',
+    element: <Notfound />
+  },
   // Admin
 
   {

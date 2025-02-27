@@ -8,8 +8,7 @@ import { motion } from 'framer-motion';
 const Jobs = () => {
     const { allJobs, searchedQuery } = useSelector(store => store.job);  // Access Redux store for jobs and search query
     const [filterJobs, setFilterJobs] = useState(allJobs);
-
-    // Filter jobs when the search query or all jobs change
+        // Filter jobs when the search query or all jobs change
     useEffect(() => {
         if (searchedQuery) {
             const filteredJobs = allJobs.filter((job) => {
@@ -33,7 +32,7 @@ const Jobs = () => {
                     </div>
 
                     {filterJobs.length <= 0 ? (
-                        <span>Job not found</span>
+                        <span>Loading Jobs...</span>
                     ) : (
                         <div className='flex-1 h-[88vh] overflow-y-auto pb-5'>
                             <div className='grid grid-cols-3 gap-4'>

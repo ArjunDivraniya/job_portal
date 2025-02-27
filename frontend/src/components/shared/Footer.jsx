@@ -74,7 +74,7 @@ function Footer() {
 
       {/* Bottom Section - Copyright */}
       <Typography variant="body2" align="center" sx={{ color: '#bbb' }}>
-        © 2025 Company Name. All rights reserved.
+        © 2025 Jobmentum. All rights reserved.
       </Typography>
     </Box>
   );
