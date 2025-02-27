@@ -58,7 +58,6 @@ The project is split into two main folders: `frontend` and `backend` .
 
 ## Features ✨
 
-### For Job Seekers:
 
 ### Platform-wide Features:
 
@@ -67,6 +66,8 @@ The project is split into two main folders: `frontend` and `backend` .
 * **Application Management** 📝: Job seekers can apply for jobs, and employers can manage applicants.
 * **Role-based Access Control** 🛡️: Employers and job seekers have access to distinct features.
 * **Company Registration** 🏢: Companies can register and update their company details.
+
+### For Job Seekers:
 
 * **Browse Jobs** 🧳: Search for job opportunities by category, location, and more.
 * **Apply for Jobs** 📝: Submit job applications with your resume.
