@@ -6,10 +6,13 @@ import ImageAvatars from './avatar.jsx';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import { Link } from 'react-router-dom';
-
+import { useSelector } from 'react-redux';
 
 export default function BasicPopover({ logoutHandler }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
+
+  // Accessing the user state from the Redux store
+  const { user } = useSelector(store => store.auth);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -64,14 +67,14 @@ export default function BasicPopover({ logoutHandler }) {
           <div className="gap-4 flex items-center">
             <ImageAvatars sx={{ width: 40, height: 40, borderRadius: '50%' }} />
             <div>
-              <h4 className="font-semibold text-lg">Sylvia Chester</h4> {/* Increased font weight for name */}
-              <div className="text-sm text-muted-foreground font-light">Lorem ipsum dolor sit.</div> {/* Lighter font for description */}
-            </div>
+              <h4 className="font-semibold text-lg">{user?.fullname}</h4> {/* Increased font weight for name */}
+              <div className="text-sm text-muted-foreground font-light">{user?.profile?.bio || "No bio available"}</div>
+              </div>
           </div>
 
           {/* Action Buttons */}
           <div className="flex flex-col gap-2 mt-4">
-          <Link to="/profile">
+            <Link to="/profile">
               <Button
                 variant="text"
                 fullWidth // This ensures the button takes up the entire width
@@ -94,28 +97,27 @@ export default function BasicPopover({ logoutHandler }) {
               </Button>
             </Link>
             <Link to="/">
-
-            <Button
-              variant="text"
-              fullWidth
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'flex-start',
-                padding: '6px 12px',
-                borderRadius: '6px',
-                '&:hover': {
-                  backgroundColor: '#f0f0f0',
-                },
-                color: '#333',
-                fontSize: '14px',
-                fontWeight: '500', // Medium weight for the button text
-              }}
-              onClick={logoutHandler}
-            >
-              <LogoutIcon sx={{ marginRight: '8px' }} />
-              Logout
-            </Button>
+              <Button
+                variant="text"
+                fullWidth
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'flex-start',
+                  padding: '6px 12px',
+                  borderRadius: '6px',
+                  '&:hover': {
+                    backgroundColor: '#f0f0f0',
+                  },
+                  color: '#333',
+                  fontSize: '14px',
+                  fontWeight: '500', // Medium weight for the button text
+                }}
+                onClick={logoutHandler}
+              >
+                <LogoutIcon sx={{ marginRight: '8px' }} />
+                Logout
+              </Button>
             </Link>
           </div>
         </Typography>

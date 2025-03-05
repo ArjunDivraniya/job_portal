@@ -1,122 +1,123 @@
 import React from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Menu, MenuItem } from '@mui/material';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Avatar,
+  IconButton,
+  Popover,
+  Typography,
+} from '@mui/material';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import EditIcon from '@mui/icons-material/Edit';
 import { useSelector } from 'react-redux';
-import { toast } from 'sonner';
-import axios from 'axios';
-import { COMPANY_API_END_POINT } from '../../utils/constant.js';
+import { useNavigate } from 'react-router-dom';
 
 const CompaniesTable = () => {
-    const { companies } = useSelector(store => store.company);
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const [selectedCompany, setSelectedCompany] = React.useState(null);
+  const { companies, searchCompanyByText } = useSelector((store) => store.company);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [selectedCompany, setSelectedCompany] = React.useState(null);
+  const navigate = useNavigate();
 
-    const handleClick = (event, companyId) => {
-        setAnchorEl(event.currentTarget);
-        setSelectedCompany(companyId);
-    };
+  // Filter companies based on search term from the Redux store
+  const filteredCompanies = companies.filter((company) => {
+    if (!searchCompanyByText) {
+      return true;
+    }
+    return company?.name?.toLowerCase().includes(searchCompanyByText.toLowerCase());
+  });
 
-    const handleClose = () => {
-        setAnchorEl(null);
-        setSelectedCompany(null);
-    };
+  const handlePopoverOpen = (event, company) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedCompany(company);
+  };
 
-    const handleStatusUpdate = async (status) => {
-        if (!selectedCompany) return;
-        try {
-            axios.defaults.withCredentials = true;
-            const res = await axios.post(`${COMPANY_API_END_POINT}/status/${selectedCompany}/update`, { status });
-            if (res.data.success) {
-                toast.success(res.data.message);
-            }
-        } catch (error) {
-            toast.error(error.response?.data?.message || 'An error occurred');
-        } finally {
-            handleClose();
-        }
-    };
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+    setSelectedCompany(null);
+  };
 
-    return (
-        <TableContainer
-            component={Paper}
-            sx={{
-                borderRadius: 4,
-                maxWidth: '90%',
-                margin: '20px auto',
-                overflow: 'hidden',
-            }}
+  return (
+    <>
+      <TableContainer component={Paper} sx={{ boxShadow: 3, borderRadius: 2 }}>
+        <Table>
+          <TableHead>
+            <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
+              <TableCell sx={{ fontWeight: 'bold', color: '#555' }}>Logo</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', color: '#555' }}>Name</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', color: '#555' }}>Date</TableCell>
+              <TableCell align="right" sx={{ fontWeight: 'bold', color: '#555' }}>
+                Action
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {filteredCompanies?.map((company, index) => (
+              <TableRow
+                key={company._id}
+                sx={{
+                  '&:hover': {
+                    backgroundColor: '#f1f1f1',
+                  },
+                  backgroundColor: index % 2 === 0 ? '#fff' : '#f9f9f9', // Alternating row colors
+                }}
+              >
+                <TableCell>
+                  <Avatar
+                    src={company.logo}
+                    alt={company.name}
+                    sx={{
+                      width: 60, // Increase the size of the logo
+                      height: 60, // Increase the size of the logo
+                      borderRadius: '50%',
+                      border: '2px solid #ddd', // Border around Avatar
+                    }}
+                  />
+                </TableCell>
+                <TableCell>{company.name}</TableCell>
+                <TableCell>{company.createdAt.split('T')[0]}</TableCell>
+                <TableCell align="right">
+                  <IconButton onClick={(event) => handlePopoverOpen(event, company)}>
+                    <MoreHorizIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      <Popover
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
+        onClose={handlePopoverClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+      >
+        <Typography
+          sx={{
+            p: 2,
+            display: 'flex',
+            alignItems: 'center',
+            cursor: 'pointer',
+            '&:hover': {
+              backgroundColor: '#f0f0f0',
+              borderRadius: 1,
+            },
+          }}
+          onClick={() => {
+            navigate(`/admin/companies/${selectedCompany?._id}`);
+            handlePopoverClose();
+          }}
         >
-            <Table>
-                <TableHead>
-                    <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
-                        <TableCell sx={{ fontWeight: 'bold', padding: '16px', color: '#333', fontSize: '16px' }}>Company Name</TableCell>
-                        <TableCell sx={{ fontWeight: 'bold', padding: '16px', color: '#333', fontSize: '16px' }}>Email</TableCell>
-                        <TableCell sx={{ fontWeight: 'bold', padding: '16px', color: '#333', fontSize: '16px' }}>Contact</TableCell>
-                        <TableCell sx={{ fontWeight: 'bold', padding: '16px', color: '#333', fontSize: '16px' }}>Website</TableCell>
-                        <TableCell sx={{ fontWeight: 'bold', padding: '16px', color: '#333', fontSize: '16px' }}>Founded</TableCell>
-                        <TableCell align="right" sx={{ fontWeight: 'bold', padding: '16px', color: '#333', fontSize: '16px' }}>Action</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {companies?.map((company) => (
-                        <TableRow
-                            key={company._id}
-                            sx={{
-                                '&:nth-of-type(odd)': { backgroundColor: '#f9f9f9' },
-                                '&:hover': { backgroundColor: '#f0f0f0', cursor: 'pointer' },
-                                transition: 'background-color 0.3s ease',
-                            }}
-                        >
-                            <TableCell sx={{ padding: '12px', fontSize: '14px' }}>{company.name}</TableCell>
-                            <TableCell sx={{ padding: '12px', fontSize: '14px' }}>{company.email}</TableCell>
-                            <TableCell sx={{ padding: '12px', fontSize: '14px' }}>{company.contact}</TableCell>
-                            <TableCell sx={{ padding: '12px', fontSize: '14px' }}>
-                                {company.website ? (
-                                    <a
-                                        href={company.website}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        style={{
-                                            color: '#1976d2',
-                                            textDecoration: 'none',
-                                            fontWeight: 'bold',
-                                        }}
-                                    >
-                                        {company.website}
-                                    </a>
-                                ) : (
-                                    'N/A'
-                                )}
-                            </TableCell>
-                            <TableCell sx={{ padding: '12px', fontSize: '14px' }}>{company.founded}</TableCell>
-                            <TableCell align="right" sx={{ padding: '12px', fontSize: '14px' }}>
-                                <IconButton
-                                    onClick={(event) => handleClick(event, company._id)}
-                                    sx={{
-                                        '&:hover': {
-                                            backgroundColor: '#e0e0e0',
-                                            borderRadius: '4px',
-                                        },
-                                        padding: '8px',
-                                    }}
-                                >
-                                    <MoreVertIcon />
-                                </IconButton>
-                                <Menu
-                                    anchorEl={anchorEl}
-                                    open={Boolean(anchorEl && selectedCompany === company._id)}
-                                    onClose={handleClose}
-                                >
-                                    <MenuItem onClick={() => handleStatusUpdate('Approved')}>Approve</MenuItem>
-                                    <MenuItem onClick={() => handleStatusUpdate('Rejected')}>Reject</MenuItem>
-                                </Menu>
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
-    );
+          <EditIcon sx={{ mr: 1 }} /> Edit
+        </Typography>
+      </Popover>
+    </>
+  );
 };
 
 export default CompaniesTable;

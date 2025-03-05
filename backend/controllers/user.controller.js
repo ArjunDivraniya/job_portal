@@ -160,15 +160,8 @@ export const logout = async (req, res) => {
     }
 };
 
-// Update profile
 export const updateProfile = async (req, res) => {
     try {
-        console.log("Update Profile API Triggered");
-
-        // Log Request User & Body
-        console.log("Authenticated User ID:", req.userId);
-        console.log("Request Body:", req.body);
-        console.log("Uploaded File:", req.file);
 
         // Ensure authentication works
         if (!req.userId) {
@@ -184,11 +177,29 @@ export const updateProfile = async (req, res) => {
         const { fullname, email, phoneNumber, bio, skills } = req.body;
         let skillsArray = skills ? skills.split(",").map(skill => skill.trim()) : [];
 
-        // File Handling
+        // Declare profilePhotoUrl
+        let profilePhotoUrl = user.profile.profilePhoto || null;
         let resumeUrl = user.profile?.resume || null;
-        if (req.file) {
+
+        // File Handling (Profile Photo)
+        if (req.files?.profilePhoto?.[0]) {
             try {
-                const fileUri = getDataUri(req.file);
+                console.log("Processing Profile Photo:", req.files.profilePhoto[0]);
+                const fileUri = getDataUri(req.files.profilePhoto[0]);
+                console.log("Generated File URI:", fileUri); // Debug
+                const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+                console.log("Cloudinary Response:", cloudResponse);
+                profilePhotoUrl = cloudResponse.secure_url;
+            } catch (fileError) {
+                console.error("Cloudinary Upload Error:", fileError);
+                return res.status(500).json({ success: false, message: "Profile picture upload failed", error: fileError.message });
+            }
+        }
+
+        // File Handling (Resume)
+        if (req.files?.resume?.[0]) {
+            try {
+                const fileUri = getDataUri(req.files.resume[0]);
                 const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
                 resumeUrl = cloudResponse.secure_url;
             } catch (fileError) {
@@ -200,10 +211,19 @@ export const updateProfile = async (req, res) => {
         // Update user data
         user.fullname = fullname || user.fullname;
         user.email = email || user.email;
-        user.profile.bio = bio || user.profile.bio;
         user.phoneNumber = phoneNumber || user.phoneNumber;
-        user.profile.skills = skillsArray.length > 0 ? skillsArray : user.profile.skills;
+        user.profile.bio = bio || user.bio;
+        user.profile.skills = skillsArray.length > 0 ? skillsArray : user.skills;
         user.profile.resume = resumeUrl;
+
+        console.log("Existing Profile Photo:", user.profilePhoto);
+        console.log("New Profile Photo URL:", profilePhotoUrl);
+
+        if (profilePhotoUrl) {
+            user.profile.profilePhoto = profilePhotoUrl;
+        }
+
+        console.log("Updated Profile Photo in User Object:", user.profilePhoto);
 
         await user.save();
 
@@ -216,13 +236,14 @@ export const updateProfile = async (req, res) => {
                 email: user.email,
                 phoneNumber: user.phoneNumber,
                 role: user.role,
-                profile: user.profile
-            }
+                profilePhoto: user.profile.profilePhoto,
+                resume: user.resume,
+                bio: user.profile.bio,
+                skills: user.profile.skills,
+            },
         });
-
     } catch (error) {
         console.error("Update Profile Error:", error);
-
         return res.status(500).json({ success: false, message: "Internal Server Error", error: error.message });
     }
 };

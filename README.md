@@ -1,10 +1,10 @@
 # Jobmentum 🚀
 
-**Jobmentum** is an innovative job portal designed to connect job seekers with employers quickly and efficiently. It allows users to register, manage profiles, apply for jobs, and allows employers to post jobs and manage applications. Whether you're a job seeker looking for your next opportunity or an employer seeking to hire top talent, **Jobmentum** is the platform that helps you find the right match. 🌟
+**Jobmentum** is an innovative job portal designed to connect students with recruiters quickly and efficiently. It allows students to register, manage profiles, apply for jobs, while employers can post jobs and manage applications. Whether you're a job seeker looking for your next opportunity or an employer seeking to hire top talent, **Jobmentum** is the platform that helps you find the right match. 🌟
 
 ## **🔗 Key Links**
 
-* **Prototype**: [Figma Prototype](#)
+* **Prototype**: [Figma Prototype](https://www.figma.com/design/rCJvmrMjiTtu9J3uqajM6z/Untitled?node-id=0-1&t=MmPrtzaCHJlxW7zw-1)
 * **Node Server**: [Backend](https://jobmentum.onrender.com)
 * **Frontend**: [Frontend](https://jomentum.netlify.app)
 * **Documentation:** [API Documentation](https://documenter.getpostman.com/view/39189648/2sAYX9kzJW)
@@ -18,10 +18,10 @@ _For more detailed setup and usage instructions, visit the respective **[Fronten
 * **Backend**: Node.js, Express.js
 * **Database**: MongoDB with Mongoose for data modeling
 * **Authentication**: JWT (JSON Web Token) for secure user authentication
-* **Cloud Storage (Optional)**: Cloudinary or Firebase for resume and file uploads.
-* **Real-time Updates & Notifications**: Firebase/Netlify/Render for real-time notifications (for job application status, job alerts).
+* **Cloud Storage**: Cloudinary for resume and file uploads.
+* **Deploy**: Netlify for frontend and Render for backend.
 * **Prototyping**: Figma for UI/UX design
-* **Other**: dotenv (for environment variables), bcryptjs (for password hashing), multer (for file uploads), Winston (for logging) 
+* **Other**: dotenv (for environment variables), bcryptjs (for password hashing), multer (for file uploads)
 
 ## **📂 Folder Structure**
 
@@ -58,7 +58,16 @@ The project is split into two main folders: `frontend` and `backend` .
 
 ## Features ✨
 
-### Job Seekers:
+
+### Platform-wide Features:
+
+* **User Authentication** 🔑: Register and log in with JWT-based authentication.
+* **Job Management** 📋: Post new jobs, view job listings, and update job details as needed.
+* **Application Management** 📝: Job seekers can apply for jobs, and employers can manage applicants.
+* **Role-based Access Control** 🛡️: Employers and job seekers have access to distinct features.
+* **Company Registration** 🏢: Companies can register and update their company details.
+
+### For Job Seekers:
 
 * **Browse Jobs** 🧳: Search for job opportunities by category, location, and more.
 * **Apply for Jobs** 📝: Submit job applications with your resume.
@@ -70,15 +79,6 @@ The project is split into two main folders: `frontend` and `backend` .
 * **Post Jobs** 🗣️: Create and manage job postings for your company.
 * **View Applications** 📑: Review job applications and shortlist candidates.
 * **Company Profile Management** 🏢: Update and manage your company details and jobs.
-* **Role-based Access** 🛡️: Manage permissions for different roles (Admin, Employer).
-
-### Platform-wide Features:
-
-* **User Authentication** 🔑: Register and log in with JWT-based authentication.
-* **Job Management** 📋: Post new jobs, view job listings, and update job details.
-* **Application Management** 📝: Job seekers can apply for jobs, and employers can manage applicants.
-* **Role-based Access Control** 🛡️: Admins can manage the platform, while employers and job seekers have access to specific features.
-* **Company Registration** 🏢: Companies can register and update their company details.
 
 ## **🎯 Contributing**
 
