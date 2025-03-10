@@ -13,11 +13,11 @@ The frontend for **Jobmentum**, a modern job application and recruitment platfor
 
 | <h3>Home Page</h3> | <h3>Jobs Page</h3> |
 |:----------:|:---------:|
-|<br><img src="https://res.cloudinary.com/dd5zrwqzj/image/upload/v1740375533/Screenshot_2025-02-24_at_11.05.55_AM_kbx3nw.png" width="500px" /> |<br><img src="https://res.cloudinary.com/dd5zrwqzj/image/upload/v1740375537/Screenshot_2025-02-24_at_11.07.25_AM_xexsmo.png" width="500px" /> |
+|<br><img src="https://res.cloudinary.com/dd5zrwqzj/image/upload/v1741603916/Screenshot_2025-03-10_at_4.18.36_PM_tgwplb.png" width="500px" /> |<br><img src="https://res.cloudinary.com/dd5zrwqzj/image/upload/v1741603915/Screenshot_2025-03-10_at_4.19.25_PM_w26v4m.png" width="500px" /> |
 
 | <h3>Profile Page </h3>| <h3>Job Details </h3>|
 |:-------------:|:-----------:|
-| <br><img src="https://res.cloudinary.com/dd5zrwqzj/image/upload/v1740375533/Screenshot_2025-02-24_at_11.07.32_AM_neqi5t.png" width="500px" /> |<br><img src="https://res.cloudinary.com/dd5zrwqzj/image/upload/v1740375533/Screenshot_2025-02-24_at_11.07.43_AM_xbqzia.png" width="500px" /> |
+| <br><img src="https://res.cloudinary.com/dd5zrwqzj/image/upload/v1741603916/Screenshot_2025-03-10_at_4.19.48_PM_vzvdh8.png" width="500px" /> |<br><img src="https://res.cloudinary.com/dd5zrwqzj/image/upload/v1741604058/Screenshot_2025-03-10_at_4.24.02_PM_b5hmny.png" width="500px" /> |
 
 
 
