@@ -1,5 +1,5 @@
 import express from "express";
-import { register, login, logout, updateProfile } from "../controllers/user.controller.js";
+import { register, login, logout, updateProfile,getAnalyticsData } from "../controllers/user.controller.js";
 import isAuthenticated from "../middlewares/isAuthenticated.js"; // Assuming the path of your middleware
 import { multipleUpload, singleUpload } from "../middlewares/multer.js";
 
@@ -10,4 +10,5 @@ router.route("/register").post(singleUpload, register);
 router.route("/login").post(login);
 router.route("/profile/update").post(isAuthenticated, multipleUpload, updateProfile);  // Protected route
 router.route("/logout").get(logout);  
+router.route("/analytics").get(getAnalyticsData)
 export default router;

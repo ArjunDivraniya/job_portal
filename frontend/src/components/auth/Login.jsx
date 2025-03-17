@@ -42,12 +42,12 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         const payload = {
             ...input,
             role: userType, // Include role (userType) based on selected radio button
         };
-
+    
         try {
             dispatch(setLoading(true)); // Set loading state to true
             const res = await axios.post(`${USER_API_END_POINT}/login`, payload, {
@@ -56,37 +56,42 @@ function Login() {
                 },
                 withCredentials: true,
             });
-
+    
             if (res.data.success) {
                 console.log('Success:', res.data.message);
-                toast.success(res.data.message);            
+                toast.success(res.data.message);  
+    
+                // Store studentId only if the role is 'student'
+                if (res.data.user.role === 'student') {
+                    localStorage.setItem('studentId', res.data.user._id);
+                }   
+    
                 // Redirect after a short delay (if needed)
                 setTimeout(() => navigate("/"), 1000);
             
                 dispatch(setUser(res.data.user));
             }
-            
-
+    
         } catch (error) {
             console.log(error);
-
-            // If the error has a response, show the message from the response
+    
             if (error.response && error.response.data && error.response.data.message) {
-                toast.error(error.response.data.message); // Show error message from the server
+                toast.error(error.response.data.message);
             } else {
-                toast.error('An error occurred, please try again!'); // Fallback message
+                toast.error('An error occurred, please try again!');
             }
-
+    
         } finally {
-            dispatch(setLoading(false)); // Set loading state to false after the request completes
+            dispatch(setLoading(false));
         }
-        
+    
         // Validate form fields
         if (!input.email || !input.password) {
             alert('Please fill in all the fields.');
             return;
         }
     };
+    
     useEffect(() => {
         if(user){
             navigate('/');

@@ -247,3 +247,41 @@ export const updateProfile = async (req, res) => {
         return res.status(500).json({ success: false, message: "Internal Server Error", error: error.message });
     }
 };
+
+
+export const getAnalyticsData = async (req, res) => {
+    try {
+        const students = await User.find();
+
+        // Job Application Trends
+        const applications = students.flatMap(student => student.applications);
+
+        // Skill Relevance
+        const totalSkills = students.flatMap(student => student.skills).length;
+        const matchedSkills = students.flatMap(student => student.matchedSkills).length;
+        const skillRelevance = ((matchedSkills / totalSkills) * 100).toFixed(2);
+
+        // Industry Demand
+        const industryCount = {};
+        students.forEach(student => {
+            student.jobListings.forEach(job => {
+                industryCount[job.industry] = (industryCount[job.industry] || 0) + 1;
+            });
+        });
+
+        // Success Rate
+        const totalApplications = applications.length;
+        const totalInterviews = students.flatMap(student => student.interviewCalls).length;
+        const successRate = ((totalInterviews / totalApplications) * 100).toFixed(2);
+
+        res.status(200).json({
+            applicationTrends: applications,
+            skillRelevance,
+            industryDemand: industryCount,
+            successRate
+        });
+
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};

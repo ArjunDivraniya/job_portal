@@ -1,4 +1,5 @@
 import Job from "../models/job.model.js"
+import User from "../models/user.model.js"
 
 // Admin: Post a new job
 export const postJob = async (req, res) => {
@@ -137,3 +138,109 @@ export const getAdminJobs = async (req, res) => {
         });
     }
 }
+export const getTopJobs = async (req, res) => {
+    try {
+        const jobs = await Job.find()
+            .populate({
+                path: 'company',
+                select: 'name logo' // Added 'logo' for company logo
+            })
+            .select('title description location salary position jobType')
+            .limit(!req.user || req.user.role !== 'student' ? 9 : 0); // Show 9 jobs for non-students
+
+        res.status(200).json({
+            success: true,
+            message: req.user && req.user.role === 'student'
+                ? "Jobs fetched successfully."
+                : "Limited job data shown.",
+            jobs
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+export const getRecommendedJobs = async (req, res) => {
+    const { studentId } = req.params;
+
+    try {
+        const student = await User.findById(studentId);
+        if (!student || student.role !== 'student') {
+            return res.status(404).json({ message: "Student not found" });
+        }
+
+        const studentSkills = student.profile.skills;
+        if (!studentSkills || studentSkills.length === 0) {
+            return res.status(400).json({ message: "No skills found for this student" });
+        }
+
+        const recommendedJobs = await Job.find({
+            requirements: { $in: studentSkills }
+        });
+
+        if (!recommendedJobs.length) {
+            return res.status(404).json({ message: "No recommended jobs found" });
+        }
+
+        res.status(200).json({ recommendedJobs });
+    } catch (error) {
+        console.error('Error fetching recommended jobs:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+
+export const getFilteredJobs = async (req, res) => {
+    console.log('Received Filters:', req.query);
+    const {
+        jobType,
+        companySize,
+        salaryRange,
+        experienceLevel,
+        requirements,
+        location
+    } = req.query;
+
+    const query = {};
+
+    if (jobType) query.jobType = jobType;
+    if (companySize) query.companySize = companySize;
+
+    // Improved salary range logic with better validation
+    if (salaryRange) {
+        const [minSalary, maxSalary] = salaryRange.split('-').map(Number);
+        if (!isNaN(minSalary) && !isNaN(maxSalary)) {
+            query.salary = { $gte: minSalary, $lte: maxSalary };
+        }
+    }
+
+    if (experienceLevel) query.experienceLevel = experienceLevel;
+
+    if (requirements) {
+        const requirementsArray = requirements.split(",").map((req) => req.trim());
+        query.requirements = { $in: requirementsArray };
+    }
+
+    if (location) {
+        query.location = { $regex: new RegExp(location, 'i') };
+    }
+
+    try {
+        console.log('Generated Query:', query);  // ✅ Debugging
+        const jobs = await Job.find(query).sort({ createdAt: -1 });
+
+        if (!jobs.length) {
+            return res.status(404).json({ success: false, message: "No jobs found for the selected filters." });
+        }
+
+        res.status(200).json({ success: true, jobs });
+    } catch (error) {
+        console.error('Error fetching jobs:', error);
+
+        // Enhanced error response for better debugging
+        res.status(500).json({
+            success: false,
+            message: "Internal Server Error",
+            error: error.message
+        });
+    }
+};
