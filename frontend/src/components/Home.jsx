@@ -7,6 +7,8 @@ import Footer from './shared/Footer.jsx'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import useGetAllAdminJobs from '../hooks/useGetAllAdminJobs.jsx'
+import  RecommendedJobs  from './recommended.jsx'
+import { Typography } from '@mui/material';
 
 function Home() {
   useGetAllAdminJobs();
@@ -23,6 +25,15 @@ function Home() {
       <HeroSection />
       <Carousel />
       <LatestJobs />
+ 
+      <div className="App">
+      <Typography variant="h4" sx={{ fontWeight: 'bold', textAlign: 'center', mb: 4 }}>
+      <span style={{ color: '#9C27B0' }}>Recommended  </span>
+      Jobs for Students
+    </Typography>
+            <RecommendedJobs />
+        </div>
+
       <Footer />
     </>
   )

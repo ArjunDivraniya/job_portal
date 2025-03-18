@@ -32,5 +32,13 @@ const isAuthenticated = async (req, res, next) => {
     });
   }
 };
+export const verifyStudent = (req, res, next) => {
+  if (req.user && req.user.role === 'student') {
+      next();
+  } else {
+      return res.status(403).json({ message: "Access restricted to students only." });
+  }
+};
+
 
 export default isAuthenticated;

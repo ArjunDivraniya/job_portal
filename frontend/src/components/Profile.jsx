@@ -10,6 +10,7 @@ import AppliedJobTable from './AppliedJobTable';
 import UpdateProfileDialog from './UpdateProfileDialog.jsx';
 import { useSelector } from 'react-redux';
 import useGetAppliedJobs from '../hooks/useGetAppliedJobs.jsx';
+import AnalyticsDashboard from './AnalyticsDashboard.jsx';
 
 function Profile() {
     useGetAppliedJobs();
@@ -82,6 +83,7 @@ function Profile() {
                 <AppliedJobTable />
             </div>
             <UpdateProfileDialog open={open} setOpen={setOpen} />
+            <AnalyticsDashboard/>
         </>
     );
 }

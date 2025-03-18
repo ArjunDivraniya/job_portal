@@ -1,77 +1,60 @@
 import React from 'react';
-import { Badge, Card, CardContent, Typography, Box } from '@mui/material';
+import { Badge, Card, CardContent, Typography, Box, Avatar, Grid, Chip } from '@mui/material';
 
-function LatestJobCards() {
+function LatestJobCards({ job }) {
   return (
-    <Card sx={{ maxWidth: 450, boxShadow: 3, borderRadius: 2, margin: 2, overflow: 'hidden' }}>
+    <Card sx={{ maxWidth: 450, boxShadow: 3, borderRadius: 3, margin: 2, overflow: 'hidden' }}>
       <CardContent sx={{ paddingBottom: 3 }}>
-        {/* Company Name */}
-        <Typography variant="h5" component="h2" sx={{ fontWeight: 'bold', color: '#333' }}>
-          Company Name
-        </Typography>
-        <Typography variant="body2" color="textSecondary" sx={{ fontStyle: 'italic' }}>
-          India
-        </Typography>
+
+        {/* Company Logo and Name */}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, marginBottom: 2 }}>
+          <Avatar
+            src={job.company?.logo || '/images/default-logo.png'}
+            alt={`${job.company?.name || 'Unknown Company'} Logo`}
+            sx={{ width: 50, height: 50 }}
+          />
+          <Box>
+            <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#333' }}>
+              {job.company?.name || 'Unknown Company'}
+            </Typography>
+            <Typography variant="body2" color="textSecondary">
+              {job.location || 'Location Not Available'}
+            </Typography>
+          </Box>
+        </Box>
 
         {/* Job Title and Description */}
-        <Box sx={{ marginTop: 2 }}>
+        <Box sx={{ marginTop: 1 }}>
           <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1876D1' }}>
-            Job Title
+            {job.title || 'Untitled Job'}
           </Typography>
           <Typography variant="body2" color="textSecondary" sx={{ marginTop: 1 }}>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quisquam, suscipit?
+            {job.description || 'No description available'}
           </Typography>
         </Box>
 
         {/* Badges Section */}
-        <Box sx={{ display: 'flex', gap: 2, marginTop: 3 }}>
-          <Badge
-            badgeContent="12"
-            color="primary"
-            sx={{
-              fontWeight: 'bold',
-              padding: '5px 10px',
-              borderRadius: 2,
-              backgroundColor: '#f1f9ff',
-              color: '#1876D1',
-              fontSize: '14px',
-            }}
-            variant="standard"
-          >
-            Positions
-          </Badge>
+        <Box sx={{ display: 'flex', gap: 1, marginTop: 3, flexWrap: 'wrap' }}>
+          <Chip
+            label={job.position || 'N/A'}
+            sx={{ backgroundColor: '#E3F2FD', color: '#1976D2', fontWeight: 'bold', borderRadius: 1 }}
+          />
 
-          <Badge
-            badgeContent="Part Time"
-            color="default"
-            sx={{
-              fontWeight: 'bold',
-              padding: '5px 10px',
-              borderRadius: 2,
-              backgroundColor: '#f1f9ff',
-              color: '#00000', // Corrected to black color
-              fontSize: '14px',
-            }}
-            variant="dot"
-          >
-            Job Type
-          </Badge>
+          <Chip
+            label={job.jobType || 'Unknown'}
+            sx={{ backgroundColor: '#E8F5E9', color: '#2E7D32', fontWeight: 'bold', borderRadius: 1 }}
+          />
 
-          <Badge
-            badgeContent="24LPA"
+          <Chip
+            label={`₹ ${job.salary?.toLocaleString() || 'N/A'}`}
             color="secondary"
             sx={{
+              backgroundColor: '#FCE4EC',
+              color: '#D81B60',
               fontWeight: 'bold',
-              padding: '5px 10px',
-              borderRadius: 2,
-              backgroundColor: '#f1f9ff',
-              color: '#9C27B0',
-              fontSize: '14px',
+              borderRadius: 1,
             }}
-            variant="dot"
-          >
-            Salary
-          </Badge>
+          />
         </Box>
       </CardContent>
     </Card>
